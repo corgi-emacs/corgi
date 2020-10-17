@@ -2,7 +2,7 @@
 
 A minimalistic evil-based Emacs configuration that feels like a slimmed down version of Spacemacs.
 
-What's in the box?
+What's in the box so far?
 
 - evil
 - evil-collection
@@ -13,6 +13,21 @@ What's in the box?
 - xclip
 - which-key
 - winum
+
+While I love Spacemacs I find the sheer size of it can become an issue. It
+contains much functionality and many customizations that I don't need, and I
+struggle to understand how things fit together, or how to add my own
+customizations.
+
+This is an attempt to go back to the basics, a simple and straightforward Emacs
+config built from first principles, using `straight.el` for reproducible package
+installs, and `use-package` to keep the config tidy. It sets up Vim/Evil style
+editing, as well as spacebar-prefixed keybindings in the style of Spacemacs.
+
+I especially felt the need for a lighter config when doing [remote pairing using
+tmux](https://lambdaisland.com/blog/2019-12-12-advent-of-parens-12-pairing-cloud-tmux).
+The limited set of dependencies should make this config quick to set up, and
+snappy in use.
 
 Keybindings based on a `SPC` leader key are installed based on
 `leader_bindings.el`. This provides a declarative single source of truth for all
