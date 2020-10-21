@@ -5,7 +5,8 @@
  ("f" "File commands"
   ("f" "Find file" counsel-find-file)
   ("s" "Save file" save-buffer)
-  ("S" "Save all" evil-write-all))
+  ("S" "Save all" evil-write-all)
+  ("A" "Find alternate file" find-alternate-file))
 
  ("s" "Search commands"
   ("s" "Search in buffer" swiper))
@@ -14,7 +15,9 @@
   ("d" "Describe"
    ("k" "Describe key" describe-key)
    ("v" "Describe variable" counsel-describe-variable)
-   ("f" "Describe function" counsel-descbinds-function)))
+   ("f" "Describe function" counsel-descbinds-function)
+   ("m" "Describe mode" describe-mode)
+   ("b" "Describe bindings" describe-bindings)))
 
  ("w" "Windows"
   ("1" "Delete other windows" delete-other-windows)
@@ -24,6 +27,7 @@
   ("d" "Delete window" delete-window))
 
  ("SPC" "Execute command (M-x)" counsel-M-x)
+ ("TAB" "Switch to previous buffer" lesser-evil/switch-to-previous-buffer)
  ("1" "Select window 1" winum-select-window-1)
  ("2" "Select window 2" winum-select-window-2)
  ("2" "Select window 2" winum-select-window-2)

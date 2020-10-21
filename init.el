@@ -1,6 +1,7 @@
 (add-to-list #'load-path (expand-file-name "init.d" user-emacs-directory))
 
 (require 'better-defaults)
+(require 'lesser-evil-commands)
 
 (straight-use-package 'use-package)
 
@@ -18,7 +19,10 @@
 
 (use-package evil :straight (evil :host github :repo "emacs-evil/evil")
   :init (setq evil-want-keybinding nil)
-  :config (evil-mode t))
+  :config
+  (evil-mode t)
+  (setq evil-move-cursor-back nil)
+  (setq evil-move-beyond-eol t))
 
 (use-package evil-leader :straight t
   :after (evil)
@@ -82,3 +86,28 @@ them to set evil-leader keybindings, and which-key descriptions."
 
 (use-package winum :straight t
   :config (winum-mode t))
+
+;;; Lisp setup
+
+(use-package clojure-mode :straight t)
+
+(use-package cider :straight t
+  :after (clojure-mode))
+
+(use-package smartparens :straight t
+  :init
+  (require 'smartparens-config)
+  (add-hook 'cider-clojure-interaction-mode-hook 'smartparens-mode) 
+  (add-hook 'cider-repl-mode-hook 'smartparens-mode)
+  (add-hook 'clojurex-mode-hook 'smartparens-mode)
+  (add-hook 'clojurescript-mode-hook 'smartparens-mode)
+  (add-hook 'clojurec-mode-hook 'smartparens-mode)
+  (add-hook 'clojure-mode-hook 'smartparens-mode)
+  (add-hook 'emacs-lisp-mode-hook 'smartparens-mode))
+
+(use-package evil-cleverparens :straight t
+  :after (evil clojure-mode smartparens)
+  :hook (smartparens-mode . evil-cleverparens-mode))
+
+(use-package aggressive-indent :straight t
+  :hook (smartparens-mode . aggressive-indent-mode))
