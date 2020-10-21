@@ -136,4 +136,7 @@
 ;; Not for everyone. If you plan on working with Arabic or other bidi languages don't use this.
 ;; (setq-default bidi-display-reordering nil)
 
+;; Don't make backup~ files
+(setq make-backup-files nil)
+
 (provide 'better-defaults)

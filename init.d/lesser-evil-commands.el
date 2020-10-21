@@ -9,4 +9,10 @@ Repeated invocations toggle between the two most recently open buffers."
   (interactive)
   (switch-to-buffer (other-buffer (current-buffer) 1)))
 
+(defun lesser-evil/cider-toggle-repl ()
+  (interactive)
+  (if (eq m 'cider-repl-mode)
+      (cider-switch-to-last-clojure-buffer)
+    (cider-switch-to-repl-buffer)))
+
 (provide 'lesser-evil-commands)

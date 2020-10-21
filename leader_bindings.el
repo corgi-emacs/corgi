@@ -9,13 +9,18 @@
   ("A" "Find alternate file" find-alternate-file))
 
  ("s" "Search commands"
-  ("s" "Search in buffer" swiper))
+  ("s" "Search in buffer" swiper)
+  ("p" "Grep in project" counsel-git-grep))
+
+ ("p" "Project"
+  ("f" "Find file" counsel-projectile-find-file)
+  ("p" "Switch project" counsel-projectile-switch-project))
 
  ("h" "Help"
   ("d" "Describe"
    ("k" "Describe key" describe-key)
    ("v" "Describe variable" counsel-describe-variable)
-   ("f" "Describe function" counsel-descbinds-function)
+   ("f" "Describe function" counsel-describe-function)
    ("m" "Describe mode" describe-mode)
    ("b" "Describe bindings" describe-bindings)))
 
