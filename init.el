@@ -13,34 +13,32 @@
 
 (use-package counsel
   :straight t
-  :after ivy
-  ;;:config (counsel-mode)i
+  :after (ivy)
+  ;;:config (counsel-mode)
   )
 
 (use-package swiper
   :straight t
   :after ivy)
 
+(use-package undo-fu
+  :straight t)
+
 (use-package evil
   :straight t
   :init (setq evil-want-keybinding nil)
   :config
   (evil-mode t)
-  (setq evil-move-cursor-back nil)
-  (setq evil-move-beyond-eol t))
+  (setq evil-move-cursor-back nil
+        evil-move-beyond-eol t
 
-(use-package evil-leader
-  :straight t
-  :after (evil)
-  :commands (evil-leader-mode global-evil-leader-mode)
-  :demand
-  :config
-  (evil-leader/set-leader "SPC")
-  (global-evil-leader-mode t)
-  (evil-leader/set-key
-   "ff" 'counsel-find-file
-   "bb" 'ivy-switch-buffer
-   "ss" 'swiper))
+        evil-undo-system 'undo-fu
+        evil-want-fine-undo t
+
+        evil-mode-line-format 'before
+        evil-normal-state-cursor '(box "black")
+        evil-insert-state-cursor '(box "green")
+        evil-visual-state-cursor '(box "#F86155")))
 
 (use-package evil-collection
   :straight t
@@ -92,6 +90,10 @@
 
 (use-package evil-cleverparens
   :straight t
+  ;; disabling these initial bindings because it changes M-d (kill-word) to
+  ;; evil-cp-delete-sexp, and I happen to use M-d a lot. Might want to review
+  ;; cause some of these seem useful.
+  :init (setq evil-cleverparens-use-additional-bindings nil)
   :after (evil clojure-mode smartparens)
   :hook (smartparens-mode . evil-cleverparens-mode))
 
@@ -127,5 +129,44 @@
   :config
   (global-multi-leader-mode 1))
 
+(use-package pprint-to-buffer
+  :straight (pprint-to-buffer
+             :type git
+             :host github
+             :files ("pprint-to-buffer/pprint-to-buffer.el")
+             :repo "plexus/plexmacs"))
+
+(use-package walkclj
+  :straight (walkclj
+             :type git
+             :host github
+             :repo "plexus/walkclj"))
+
+;; Use the Clojure ns name as buffer name
+(use-package clj-ns-name
+  :after (walkclj)
+  :straight (clj-ns-name
+             :type git
+             :host github
+             :files ("clj-ns-name/clj-ns-name.el")
+             :repo "plexus/plexmacs")
+  :config
+  (clj-ns-name-install)
+  ;; Apply ns-name-as-buffer-name when jumping to definition
+  (advice-add #'cider-find-file
+              :around
+              (lambda (cider-find-file-fn url)
+                (let ((result (funcall cider-find-file-fn url)))
+                  (clj-ns-name-rename-clj-buffer-to-namespace*)
+                  result))))
+;; (clj-ns-name-uninstall)
+
 (desktop-save-mode)
 (server-start)
+(set-frame-font "Iosevka Fixed SS14-14")
+(global-linum-mode 1)
+
+(add-hook 'before-save-hook
+          (lambda ()
+            (when (derived-mode-p 'prog-mode)
+              (delete-trailing-whitespace))))

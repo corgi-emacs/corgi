@@ -1,6 +1,6 @@
 (:bindings
  (("TAB" "Indent" indent-for-tab-command)
-  
+
   ("SPC" "Global leader key"
    ("b" "Buffer commands"
     ("b" "Switch buffer" ivy-switch-buffer)
@@ -29,11 +29,16 @@
      ("b" "Describe bindings" describe-bindings)))
 
    ("w" "Windows"
+    ("TAB" "Alternate window" alternate-window)
     ("1" "Delete other windows" delete-other-windows)
+    ("2" "Two column layout" lesser-evil/double-columns)
     ("/" "Split window right" split-window-right)
     ("-" "Split window below" split-window-below)
     ("o" "Go to other window" other-window)
     ("d" "Delete window" delete-window))
+
+   ("k" "Structural editing"
+    ("E" "Splice backwards" sp-splice-sexp-killing-backward))
 
    ("SPC" "Execute command (M-x)" counsel-M-x)
    ("TAB" "Switch to previous buffer" lesser-evil/switch-to-previous-buffer)
@@ -49,6 +54,7 @@
    ("0" "Select window 10" winum-select-window-10))
 
   ("," "Project specific leader key"
+
    ("e" "Evaluate expressions"
     ("b" "Eval buffer" :eval/buffer)
     ("e" "Eval form before cursor" :eval/last-sexp)
@@ -65,18 +71,19 @@
    ("g" "Go places"
     ("g" "Jump to definition" :jump/definition)
     ("b" "Go back" :jump/back))
-   
+
    ("l" "Link to REPL"
     ("p" "Link with project" sesman-link-with-project)
     ("b" "Link with buffer" sesman-link-with-buffer)
     ("d" "Link with directory" sesman-link-with-directory)
-    ("l" "Link least specific" sesman-link-with-least-specific))))
+    ("l" "Link least specific" sesman-link-with-least-specific))
+
+   ("'" "Jack in" :repl/jack-in)
+   ("\"" "Jack in Alternate" :repl/jack-in-alt)
+   ("&" "Jack in Combined" :repl/jack-in-combined)
+   ("," "Eval from registry and pprint" :eval/registry-pprint)))
 
  ;; ","  'plexus-clojure-extras/cider-pprint-register
- ;; "ss" lesser-evil/cider-toggle-repl
- ;; "'"  'cider-jack-in-clj
- ;; "\"" 'cider-jack-in-cljs
- ;; "\&" 'cider-jack-in-clj&cljs
 
  :modes
  ((emacs-lisp-mode ( :eval/last-sexp eval-last-sexp
@@ -95,11 +102,18 @@
                   :eval/last-sexp-replace cider-eval-last-sexp-and-replace
                   :eval/buffer cider-eval-buffer
                   :eval/region cider-eval-region
-                  
+                  :eval/registry-pprint lesser-evil/cider-pprint-register
+
                   :repl/toggle lesser-evil/cider-toggle-repl
                   :repl/quit cider-quit
                   :repl/other cider-repl-switch-to-other
 
                   :jump/definition cider-find-var
                   :jump/back cider-pop-back
-                  ))))
+
+                  :repl/jack-in ("Jack-in Clojure" cider-jack-in-clj)
+                  :repl/jack-in-alt ("Jack in ClojureScript" cider-jack-in-clj)
+                  :repl/jack-in-combined ("Jack in Clj+Cljs" cider-jack-in-clj&cljs)))
+
+  (c-mode ( :jump/definition xref-find-definitions
+            :jump/back xref-pop-marker-stack))))

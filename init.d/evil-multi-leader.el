@@ -5,7 +5,6 @@
 (require 'which-key)
 
 (defvar eml/map (make-sparse-keymap))
-(defvar eml/mode-commands ())
 (defvar eml/binding-files (list (expand-file-name "leader_bindings2.el" user-emacs-directory)))
 
 (defun eml/read-file (file-name)
@@ -30,7 +29,6 @@
                               (eml/flatten-bindings (concat prefix p " ") b))
                             rest)))))
 
-
 (defun eml/set-bindings* (bindings command-mapping)
   (setcdr eml/map nil)
   (cl-loop
@@ -43,6 +41,9 @@
      ((keywordp cmd)
       (let ((sym (eml/kv-list-get command-mapping cmd)))
         (when sym
+          (when (listp sym)
+            (setq desc (car sym))
+            (setq sym (cadr sym)))
           (progn
             (evil-define-key 'normal eml/map (kbd keys) sym)
             (evil-define-key 'motion eml/map (kbd keys) sym)
@@ -60,7 +61,7 @@
     (cl-loop
      for (mode mapping) in modes
      do
-     (when (bound-and-true-p mode)
+     (when (derived-mode-p mode)
        (setq commands mapping)))
     (eml/set-bindings* bindings commands))
   (evil-normalize-keymaps))
@@ -73,6 +74,8 @@
      for file in eml/binding-files
      do
      (eml/set-bindings (eml/read-file file)))))
+
+;;(eml/set-bindings (eml/read-file (car eml/binding-files)))
 
 (define-minor-mode global-multi-leader-mode
   "Global minor mode for multi-leader support."
