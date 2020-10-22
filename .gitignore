@@ -1,3 +1,5 @@
 straight
 .emacs.desktop
 .emacs.desktop.lock
+projectile.cache
+projectile-bookmarks.eld

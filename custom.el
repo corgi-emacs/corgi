@@ -5,7 +5,20 @@
  ;; If there is more than one, they won't work right.
  '(custom-enabled-themes '(leuven))
  '(safe-local-variable-values
-   '((elisp-lint-indent-specs
+   '((cider-refresh-after-fn . "reloaded.repl/resume")
+     (cider-refresh-before-fn . "reloaded.repl/suspend")
+     (eval
+      (lambda nil
+        (let
+            ((init-file-path
+              (expand-file-name "emacs.d/nextjournal.el" default-directory)))
+          (when
+              (file-exists-p init-file-path)
+            (load init-file-path)
+            (require 'nextjournal)))))
+     (cider-refresh-after-fn . "com.nextjournal.journal.repl/post-refresh")
+     (cider-refresh-before-fn . "com.nextjournal.journal.repl/pre-refresh")
+     (elisp-lint-indent-specs
       (if-let* . 2)
       (when-let* . 1)
       (let* . defun)

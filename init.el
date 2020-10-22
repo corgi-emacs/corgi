@@ -113,7 +113,8 @@
   (add-hook 'clojure-mode-hook 'company-mode)
   (add-hook 'emacs-lisp-mode-hook 'company-mode))
 
-(use-package projectile :straight t)
+(use-package projectile :straight t
+  :config (projectile-global-mode))
 
 (use-package counsel-projectile
   :straight t

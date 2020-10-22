@@ -4,7 +4,7 @@
   ("SPC" "Global leader key"
    ("b" "Buffer commands"
     ("b" "Switch buffer" ivy-switch-buffer)
-    ("d" "Kill buffer" kill-buffer))
+    ("d" "Kill buffer" kill-this-buffer))
 
    ("f" "File commands"
     ("f" "Find file" counsel-find-file)
@@ -44,7 +44,7 @@
    ("TAB" "Switch to previous buffer" lesser-evil/switch-to-previous-buffer)
    ("1" "Select window 1" winum-select-window-1)
    ("2" "Select window 2" winum-select-window-2)
-   ("2" "Select window 2" winum-select-window-2)
+   ("3" "Select window 3" winum-select-window-3)
    ("4" "Select window 4" winum-select-window-4)
    ("5" "Select window 5" winum-select-window-5)
    ("6" "Select window 6" winum-select-window-6)
