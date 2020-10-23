@@ -10,7 +10,10 @@
     ("f" "Find file" counsel-find-file)
     ("s" "Save file" save-buffer)
     ("S" "Save all" evil-write-all)
-    ("A" "Find alternate file" find-alternate-file))
+    ("A" "Find alternate file" find-alternate-file)
+    ("e" "Emacs files"
+     ("i" "Open init.el" lesser-evil/open-init-el)
+     ("b" "Open bindings file" lesser-evil/open-bindings)))
 
    ("s" "Search commands"
     ("s" "Search in buffer" swiper)
@@ -41,6 +44,7 @@
     ("E" "Splice backwards" sp-splice-sexp-killing-backward))
 
    ("SPC" "Execute command (M-x)" counsel-M-x)
+   ("u" "Universal prefix" universal-argument)
    ("TAB" "Switch to previous buffer" lesser-evil/switch-to-previous-buffer)
    ("1" "Select window 1" winum-select-window-1)
    ("2" "Select window 2" winum-select-window-2)
@@ -69,14 +73,20 @@
     ("o" "Switch to Other REPL" :repl/other))
 
    ("g" "Go places"
-    ("g" "Jump to definition" :jump/definition)
-    ("b" "Go back" :jump/back))
+    ("g" "Go to definition" :jump/definition)
+    ("b" "Go back" :jump/back)
+    ("n" "Go to namespace" :jump/ns))
 
    ("l" "Link to REPL"
     ("p" "Link with project" sesman-link-with-project)
     ("b" "Link with buffer" sesman-link-with-buffer)
     ("d" "Link with directory" sesman-link-with-directory)
     ("l" "Link least specific" sesman-link-with-least-specific))
+
+   ("r" "Refactor"
+    ("t" "Threading"
+     ("f" "Thread first" :refactor/thread-first)
+     ("l" "Thread last"  :refactor/thread-last)))
 
    ("'" "Jack in" :repl/jack-in)
    ("\"" "Jack in Alternate" :repl/jack-in-alt)
@@ -104,16 +114,22 @@
                   :eval/region cider-eval-region
                   :eval/registry-pprint lesser-evil/cider-pprint-register
 
-                  :repl/toggle lesser-evil/cider-toggle-repl
+                  :repl/toggle cider-switch-to-repl-buffer
                   :repl/quit cider-quit
                   :repl/other cider-repl-switch-to-other
 
                   :jump/definition cider-find-var
                   :jump/back cider-pop-back
+                  :jump/ns cider-find-ns
+
+                  :refactor/thread-first clojure-thread-first-all
+                  :refactor/thread-last clojure-thread-last-all
 
                   :repl/jack-in ("Jack-in Clojure" cider-jack-in-clj)
                   :repl/jack-in-alt ("Jack in ClojureScript" cider-jack-in-clj)
                   :repl/jack-in-combined ("Jack in Clj+Cljs" cider-jack-in-clj&cljs)))
+
+  (cider-repl-mode ( :repl/toggle cider-switch-to-last-clojure-buffer))
 
   (c-mode ( :jump/definition xref-find-definitions
             :jump/back xref-pop-marker-stack))))

@@ -1,0 +1,22 @@
+Stuff left to do
+
+- the multi-leader-key stuff mostly works, but there's still some weirdness
+  around major-mode specific bindings. See the commented hack to prevent
+  bindings from one mode bleading into buffers of a different mode.
+- prefixes that don't have any assigned bindings in a given mode still show up
+  in which key
+- extra multi-leader-key into a plexmacs package
+- pull the extra commands into a utility package
+- see if the CIDER tweaks can (configurably) make it upstream  
+
+Stuff still worth considering adding
+- auto-highlight-symbol -> main thing I use this for in spacemacs is navigating
+  with # and *
+- org-mode -> kind of obvious
+- magit -> I don't really use it much, but just improved commit message buffer
+  bindings would be great, and if this is going to be a proper "distro" it
+  should be in there.
+- JS/python -> I don't want support for every language, but these two are so
+  dominant they should be supported out of the box
+- HTML/CSS -> the web, yo!
+

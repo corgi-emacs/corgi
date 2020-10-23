@@ -9,12 +9,6 @@ Repeated invocations toggle between the two most recently open buffers."
   (interactive)
   (switch-to-buffer (other-buffer (current-buffer) 1)))
 
-(defun lesser-evil/cider-toggle-repl ()
-  (interactive)
-  (if (eq m 'cider-repl-mode)
-      (cider-switch-to-last-clojure-buffer)
-    (cider-switch-to-repl-buffer)))
-
 (defun lesser-evil/double-columns ()
   "Simplified version of spacemacs/window-split-double-column"
   (interactive)
@@ -28,5 +22,13 @@ Repeated invocations toggle between the two most recently open buffers."
 (defun lesser-evil/cider-pprint-register (register)
   (interactive (list (register-read-with-preview "Eval register: ")))
   (cider--pprint-eval-form (get-register register)))
+
+(defun lesser-evil/open-init-el ()
+  (interactive)
+  (find-file (expand-file-name "init.el" user-emacs-directory)))
+
+(defun lesser-evil/open-bindings ()
+  (interactive)
+  (find-file (expand-file-name "leader_bindings2.el" user-emacs-directory)))
 
 (provide 'lesser-evil-commands)
