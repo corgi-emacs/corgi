@@ -198,7 +198,6 @@
 
 (use-package dumb-jump :straight t)
 
-(desktop-save-mode)
 (server-start)
 (set-frame-font "Iosevka Fixed SS14-14")
 (global-linum-mode 1)
