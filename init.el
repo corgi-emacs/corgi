@@ -37,7 +37,7 @@
         evil-want-fine-undo t
 
         evil-mode-line-format 'before
-        evil-normal-state-cursor '(box "black")
+        evil-normal-state-cursor '(box "orange")
         evil-insert-state-cursor '(box "green")
         evil-visual-state-cursor '(box "#F86155")))
 
