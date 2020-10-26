@@ -201,6 +201,8 @@
 
 (use-package dumb-jump :straight t)
 
+(use-package goto-last-change :straight t)
+
 (use-package magit
   :straight t)
 

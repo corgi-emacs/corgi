@@ -36,6 +36,10 @@
      ("m" "Describe mode" describe-mode)
      ("b" "Describe bindings" describe-bindings)))
 
+   ("j" "Jump"
+    ("i" "Jump in buffer" counsel-imenu)
+    ("c" "Jump to last change" goto-last-change))
+
    ("w" "Windows"
     ("TAB" "Alternate window" alternate-window)
     ("1" "Delete other windows" delete-other-windows)
