@@ -2,6 +2,12 @@
 
 A minimalistic evil-based Emacs configuration that feels like a slimmed down version of Spacemacs.
 
+*This is a personal setup and a work in progress. Things will still change, some things will seem highly opinionated, some things will still break. Use at your own risk. The plan is to eventually evolve this into a @lambdaisland endorsed Clojure-focused evil-based Emacs config, but until we get there this is not intended for general consumption.*
+
+*Initial write-up of the first version is below, but is already outdated.*
+
+----
+
 What's in the box so far?
 
 - evil
