@@ -35,3 +35,14 @@ Stuff still worth considering adding
 
 With the above things added we're not *that* lightweight anymore, so spend some
 time tweaking the use-package declarations so more things are loaded on demand.
+
+More far fetched ideas
+- Start a babashka nrepl instance on startup, and have ~*scratch*~ start in
+  clojure-mode, with eval going to babashka, so it's always possible to eval
+  clojure forms.
+- When trying to eval in a clojure buffer that does not have a connection,
+  instead of silently doing nothing, give the user options
+  - jack-in
+  - sesman-link the buffer to the babashka connection
+  - sesman-link to another existing connection
+  - cider-connect
