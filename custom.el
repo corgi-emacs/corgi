@@ -5,7 +5,20 @@
  ;; If there is more than one, they won't work right.
  '(custom-enabled-themes '(leuven))
  '(safe-local-variable-values
-   '((cider-refresh-after-fn . "reloaded.repl/resume")
+   '((eval progn
+           (setenv "MELVN__SERVER_PORT"
+                   (or
+                    (getenv "MELVN__SERVER_PORT")
+                    "8078"))
+           (setenv "MELVN__DATOMIC_URI"
+                   (or
+                    (getenv "MELVN__DATOMIC_URI")
+                    "datomic:dev://localhost:4334/onze"))
+           (setenv "MB_DB_FILE"
+                   (or
+                    (getenv "MB_DB_FILE")
+                    "../metabase/metabase.db;AUTO_SERVER=TRUE")))
+     (cider-refresh-after-fn . "reloaded.repl/resume")
      (cider-refresh-before-fn . "reloaded.repl/suspend")
      (eval
       (lambda nil

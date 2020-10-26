@@ -2,6 +2,7 @@
 
 (require 'better-defaults)
 (require 'lesser-evil-commands)
+(require 'better-emacs-lisp)
 
 (straight-use-package 'use-package)
 
@@ -92,7 +93,12 @@
         cljr-cljs-clojure-test-declaration "[clojure.test :refer [deftest testing is are use-fixtures run-tests join-fixtures]]"
         cljr-clojure-test-declaration "[clojure.test :refer [deftest testing is are use-fixtures run-tests join-fixtures]]"
         cljr-eagerly-build-asts-on-startup nil
-        cljr-warn-on-eval nil))
+        cljr-warn-on-eval nil)
+  (add-hook 'cider-clojure-interaction-mode-hook 'clj-refactor-mode)
+  (add-hook 'clojurex-mode-hook 'clj-refactor-mode)
+  (add-hook 'clojurescript-mode-hook 'clj-refactor-mode)
+  (add-hook 'clojurec-mode-hook 'clj-refactor-mode)
+  (add-hook 'clojure-mode-hook 'clj-refactor-mode))
 
 (use-package smartparens
   :straight t
@@ -104,7 +110,8 @@
   (add-hook 'clojurescript-mode-hook 'smartparens-mode)
   (add-hook 'clojurec-mode-hook 'smartparens-mode)
   (add-hook 'clojure-mode-hook 'smartparens-mode)
-  (add-hook 'emacs-lisp-mode-hook 'smartparens-mode))
+  (add-hook 'emacs-lisp-mode-hook 'smartparens-mode)
+  (add-hook 'lisp-data-mode-hook 'smartparens-mode))
 
 (use-package evil-cleverparens
   :straight t
@@ -117,7 +124,14 @@
 
 (use-package aggressive-indent
   :straight t
-  :hook (smartparens-mode . aggressive-indent-mode))
+  :init
+  (add-hook 'cider-clojure-interaction-mode-hook 'aggressive-indent-mode)
+  (add-hook 'clojurex-mode-hook 'aggressive-indent-mode)
+  (add-hook 'clojurescript-mode-hook 'aggressive-indent-mode)
+  (add-hook 'clojurec-mode-hook 'aggressive-indent-mode)
+  (add-hook 'clojure-mode-hook 'aggressive-indent-mode)
+  (add-hook 'emacs-lisp-mode-hook 'aggressive-indent-mode)
+  (add-hook 'lisp-data-mode-hook 'aggressive-indent-mode))
 
 (use-package company
   :straight t
@@ -130,14 +144,16 @@
   (add-hook 'clojure-mode-hook 'company-mode)
   (add-hook 'emacs-lisp-mode-hook 'company-mode))
 
-(use-package projectile :straight t
+(use-package projectile
+  :straight t
   :config (projectile-global-mode))
 
 (use-package counsel-projectile
   :straight t
   :after (projectile))
 
-(use-package elisp-slime-nav :straight t
+(use-package elisp-slime-nav
+  :straight t
   :config
   (add-hook 'emacs-lisp-mode-hook 'turn-on-elisp-slime-nav-mode)
   (add-hook 'ielm-mode-hook 'turn-on-elisp-slime-nav-mode))
@@ -180,6 +196,8 @@
                   result))))
 ;; (clj-ns-name-uninstall)
 
+(use-package dumb-jump :straight t)
+
 (desktop-save-mode)
 (server-start)
 (set-frame-font "Iosevka Fixed SS14-14")
@@ -192,6 +210,8 @@
 
 (require 'evil-multi-leader)
 (global-multi-leader-mode 1)
+
+(setq vc-follow-symlinks t)
 
 ;; Patches
 

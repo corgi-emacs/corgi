@@ -89,7 +89,7 @@
   ;; *nrepl-decoding*
   (when (not (or  (eql major-mode 'fundamental-mode)
                   (eql major-mode 'minibuffer-inactive-mode)))
-    (message "multi-leader-mode (minor mode) %s" (buffer-name))
+    ;;(message "multi-leader-mode (minor mode) %s" (buffer-name))
     (eml/maybe-set-bindings)))
 
 ;;(eml/set-bindings (eml/read-file (car eml/binding-files)))

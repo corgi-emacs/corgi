@@ -1,5 +1,7 @@
 (:bindings
  (("TAB" "Indent" indent-for-tab-command)
+  (">" "Slurp" sp-forward-slurp-sexp)
+  ("<" "Barf" sp-forward-barf-sexp)
 
   ("SPC" "Global leader key"
    ("b" "Buffer commands"
@@ -103,8 +105,13 @@
                      :repl/toggle ielm-mode
 
                      :jump/definition xref-find-definitions
-                     :jump/back xref-pop-marker-stack))
+                     :jump/back xref-pop-marker-stack
+
+                     :refactor/thread-first lesser-evil/elisp-thread-first-all
+                     :refactor/thread-last lesser-evil/elisp-thread-last-all
+                     ))
   ;;  (ielm-mode ( :repl/toggle ))
+
   (clojure-mode ( :eval/last-sexp cider-eval-last-sexp
                   :eval/last-sexp-pprint cider-pprint-eval-last-sexp
                   :eval/last-sexp-pprint-comment cider-pprint-eval-last-sexp-to-comment
@@ -129,7 +136,14 @@
                   :repl/jack-in-alt ("Jack in ClojureScript" cider-jack-in-clj)
                   :repl/jack-in-combined ("Jack in Clj+Cljs" cider-jack-in-clj&cljs)))
 
-  (cider-repl-mode ( :repl/toggle cider-switch-to-last-clojure-buffer))
+  (cider-repl-mode ( :repl/toggle cider-switch-to-last-clojure-buffer
+                     :repl/quit cider-quit
+                     :repl/other cider-repl-switch-to-other
+
+                     :jump/definition cider-find-var
+                     :jump/back cider-pop-back
+                     :jump/ns cider-find-ns
+                     ))
 
   (c-mode ( :jump/definition xref-find-definitions
             :jump/back xref-pop-marker-stack))))
