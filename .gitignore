@@ -3,3 +3,4 @@ straight
 .emacs.desktop.lock
 projectile.cache
 projectile-bookmarks.eld
+.swp
