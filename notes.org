@@ -8,6 +8,19 @@ Stuff left to do
 - extra multi-leader-key into a plexmacs package
 - pull the extra commands into a utility package
 - see if the CIDER tweaks can (configurably) make it upstream  
+- automatically reuse CIDER buffers (should also go upstream?)
+- add support for a user config file, so more personal tweaks like the font and
+  theme can be split out
+
+Issues
+- company mode behaves differently than in spacemacs, making the autocompletion
+  a lot less pleasant to work with. Figure out how to fix that
+- multi-leader-mode is not enabled by default in *Messages*, possibly because
+  the buffer already exists when it gets loaded
+- smartparens/evil-cleverparens are currently only enabled in Clojure and Emacs
+  Lisp buffers, which is annoying e.g. when navigating Java (I keep trying to
+  copy identifiers with ~yL~, but ~L~ navigates to end of buffer instead of to
+  next form). Should this be enabled in all ~prog-mode~ buffers?
 
 Stuff still worth considering adding
 - auto-highlight-symbol -> main thing I use this for in spacemacs is navigating
@@ -20,4 +33,5 @@ Stuff still worth considering adding
   dominant they should be supported out of the box
 - HTML/CSS -> the web, yo!
 
-
+With the above things added we're not *that* lightweight anymore, so spend some
+time tweaking the use-package declarations so more things are loaded on demand.
