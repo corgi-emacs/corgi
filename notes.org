@@ -26,12 +26,14 @@ Stuff still worth considering adding
 - auto-highlight-symbol -> main thing I use this for in spacemacs is navigating
   with # and *
 - org-mode -> kind of obvious
+  - make sure eval of clojure code blocks works
 - magit -> I don't really use it much, but just improved commit message buffer
   bindings would be great, and if this is going to be a proper "distro" it
   should be in there.
 - JS/python -> I don't want support for every language, but these two are so
   dominant they should be supported out of the box
 - HTML/CSS -> the web, yo!
+- Markdown mode -> make sure code block handling works properly
 
 With the above things added we're not *that* lightweight anymore, so spend some
 time tweaking the use-package declarations so more things are loaded on demand.
