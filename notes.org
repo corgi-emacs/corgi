@@ -48,3 +48,14 @@ More far fetched ideas
   - sesman-link the buffer to the babashka connection
   - sesman-link to another existing connection
   - cider-connect
+
+* Notes from kommen 2020-10-26
+
+https://github.com/kommen/lesser-evil/commits/main
+
+- evil-escape (fd)
+- magit / evil-magit -> fix TAB
+- desktop-save-mode causes pain (saves theme information?)
+- theme -> likes dracula or eigengrau (jack's theme)
+- navigating auto complete buffers down with CTRL-j
+
