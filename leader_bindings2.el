@@ -1,5 +1,5 @@
 (:bindings
- (("TAB" "Indent" indent-for-tab-command)
+ (("TAB" "Indent" :format/tab-indent)
   (">" "Slurp" sp-forward-slurp-sexp)
   ("<" "Barf" sp-forward-barf-sexp)
 
@@ -24,6 +24,9 @@
    ("p" "Project"
     ("f" "Find file" counsel-projectile-find-file)
     ("p" "Switch project" counsel-projectile-switch-project))
+
+   ("g" "Git"
+    ("s" "Magit Status" magit-status))
 
    ("h" "Help"
     ("d" "Describe"
@@ -98,7 +101,9 @@
  ;; ","  'plexus-clojure-extras/cider-pprint-register
 
  :modes
- ((emacs-lisp-mode ( :eval/last-sexp eval-last-sexp
+ ((prog-mode ( :format/tab-indent indent-for-tab-command))
+
+  (emacs-lisp-mode ( :eval/last-sexp eval-last-sexp
                      :eval/buffer eval-buffer
                      :eval/last-sexp-pprint pprint-to-buffer-last-sexp
                      :eval/region cider-eval-region
