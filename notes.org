@@ -58,4 +58,5 @@ https://github.com/kommen/lesser-evil/commits/main
 - desktop-save-mode causes pain (saves theme information?)
 - theme -> likes dracula or eigengrau (jack's theme)
 - navigating auto complete buffers down with CTRL-j
-
+- SPC j i for navigating to functions within a buffer (helm-jump-in-buffer)
+- SPC g l l to open a browser to github for the line the cursor is on (git-link)
