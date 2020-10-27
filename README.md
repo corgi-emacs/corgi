@@ -84,6 +84,44 @@ Spacemacs-like bindings.
  ("0" "Select window 10" winum-select-window-10))
 ```
 
+## Principles
+
+**Everything is a package**
+
+Custom functions and modifications should become their
+own package, or be submitted upstream, so that the config itself is just loading
+packages and tying them together.
+
+-> still a few things in here that need to go into packages.
+
+**When in doubt, do less**
+
+When there are multiple competing options for how to handle something, do the
+one that is closer to the default.
+
+**Declarative keybindings**
+
+Bindings are data and should be in one place, people who want to tweak or supply
+their own bindings need to just edit one file with bindings and nothing but
+bindings.
+
+**Consistent keybindings**
+
+When a command is specific to a major mode, its binding should do the closest
+equivalent in other major modes, or do nothing. So no bindings that do radically
+different things depending on the mode. (this is mostly for `,` leader keys)
+
+**A good enough subset**
+
+We don't want to do everything that Spacemacs (or vim) does, we do want to have
+a good enough set of commands that a person can easily learn and be productive
+with, without getting overwhelmed.
+
+**Terminal-first**
+
+Things should work just as well in the terminal as in the GUI. There should be
+no bindings or behaviors that only work in the GUI.
+
 ## License
 
 GPL version 3
