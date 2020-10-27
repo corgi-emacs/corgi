@@ -10,7 +10,10 @@
   :straight t
   :defer 0.1
   :diminish
-  :config (ivy-mode))
+  :config
+  (ivy-mode)
+  (define-key ivy-minibuffer-map (kbd "C-j") #'ivy-next-line)
+  (define-key ivy-minibuffer-map (kbd "C-k") #'ivy-previous-line))
 
 (use-package counsel
   :straight t
