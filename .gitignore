@@ -7,3 +7,5 @@ projectile-bookmarks.eld
 /custom.el
 /lesser-evil-user-config.el
 /transient
+recentf
+smex-items
