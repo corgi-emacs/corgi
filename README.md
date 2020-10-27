@@ -122,6 +122,18 @@ with, without getting overwhelmed.
 Things should work just as well in the terminal as in the GUI. There should be
 no bindings or behaviors that only work in the GUI.
 
+**Reproducible**
+
+Everything is immutably versioned with straight. People should never run into
+issues because of slightly different package versions.
+
+**Somewhat opinionated**
+
+This config makes a few clear, non-negotiable decisions. It's evil based, has
+structural editing, includes org-mode, etc. But on some things it does not have
+an opinion. The theme, font, desktop-mode, linum-mode, mode-line are all things
+you can configure in your own `lesser-evil-user-config.el`.
+
 ## License
 
 GPL version 3

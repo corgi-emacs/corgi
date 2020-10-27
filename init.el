@@ -220,6 +220,7 @@
 (require 'evil-multi-leader)
 (global-multi-leader-mode 1)
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Patches
 
 ;; Modified version, if no REPL of the right type is found then switch to any
@@ -234,6 +235,17 @@
 (defadvice cider-find-var (before add-evil-jump activate)
   (evil-set-jump))
 
+;; Offer to create parent directories if they do not exist
+;; http://iqbalansari.github.io/blog/2014/12/07/automatically-create-parent-directories-on-visiting-a-new-file-in-emacs/
+(defun magnars/create-non-existent-directory ()
+  (let ((parent-directory (file-name-directory buffer-file-name)))
+    (when (and (not (file-exists-p parent-directory))
+               (y-or-n-p (format "Directory `%s' does not exist! Create it?" parent-directory)))
+      (make-directory parent-directory t))))
+
+(add-to-list 'find-file-not-found-functions 'magnars/create-non-existent-directory)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; User config
 
 (setq straight-current-profile 'lesser-evil-user)
