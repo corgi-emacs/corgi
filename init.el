@@ -22,7 +22,14 @@
   (define-key ivy-minibuffer-map (kbd "C-k") #'ivy-previous-line))
 
 (use-package counsel
-  :after (ivy))
+  :after (ivy)
+  :config
+  ;; This ensures that SPC f r (counsel-recentf, show recently opened files)
+  ;; actually works
+  (recentf-mode 1))
+
+;; Make counsel-M-x show most recently used commands first
+(use-package smex)
 
 (use-package swiper
   :after (ivy))
@@ -201,6 +208,10 @@
 
 (use-package evil-magit
   :after (magit))
+
+(use-package org)
+
+(use-package markdown-mode)
 
 (require 'evil-multi-leader)
 (global-multi-leader-mode 1)

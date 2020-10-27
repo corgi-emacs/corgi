@@ -12,6 +12,7 @@
     ("f" "Find file" counsel-find-file)
     ("s" "Save file" save-buffer)
     ("S" "Save all" evil-write-all)
+    ("r" "Recently opened files" counsel-recentf)
     ("A" "Find alternate file" find-alternate-file)
     ("e" "Emacs files"
      ("i" "Open init.el" lesser-evil/open-init-el)
