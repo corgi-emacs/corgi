@@ -49,9 +49,7 @@
         evil-mode-line-format 'before
         evil-normal-state-cursor '(box "orange")
         evil-insert-state-cursor '(box "green")
-        evil-visual-state-cursor '(box "#F86155"))
-
-  (define-key evil-motion-state-map (kbd "TAB") #'indent-for-tab-command))
+        evil-visual-state-cursor '(box "#F86155")))
 
 (use-package evil-collection
   :after (evil)
@@ -116,19 +114,25 @@
   (add-hook 'emacs-lisp-mode-hook 'smartparens-mode)
   (add-hook 'lisp-data-mode-hook 'smartparens-mode))
 
+(require 'a)
+
 (use-package evil-cleverparens
   ;; disabling these initial bindings because it changes M-d (kill-word) to
   ;; evil-cp-delete-sexp, and I happen to use M-d a lot. Might want to review
   ;; cause some of these seem useful.
   :init (setq evil-cleverparens-use-additional-bindings nil)
   :config
-  ;; evil-cp-regular-bindings contain various overrides of fundamental vim/evil
-  ;; commands like x Y P C D etc. This seems a little too clever IMO. e.g. x
-  ;; deletes a char or splices when on a delimiter, well we have ds( for that.
-  ;; In particular I need to be able to delete a single parenthesis sometimes to
-  ;; fix up a mess, and this really gets in the way. I may undefine more of
-  ;; these in the future.
-  (setq evil-cp-regular-bindings (delq (assoc "x" evil-cp-regular-bindings) evil-cp-regular-bindings))
+  ;; Restore some "normal" evil bindings. We have bindings and text objects for
+  ;; structural editing, so no need to override (and make unavailable) these
+  ;; "plain" operations.
+  (setq evil-cp-regular-bindings
+        (a-assoc evil-cp-regular-bindings
+                 "x" 'evil-delete-char
+                 "D" 'evil-delete-line
+                 "P" 'evil-paste-before
+                 "y" 'evil-yank
+                 "Y" 'evil-yank-line))
+  (evil-cp--enable-regular-bindings)
   :after (evil clojure-mode smartparens)
   :hook (smartparens-mode . evil-cleverparens-mode))
 
