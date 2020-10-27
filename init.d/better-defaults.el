@@ -139,4 +139,7 @@
 ;; Don't make backup~ files
 (setq make-backup-files nil)
 
+;; Stop asking about following symlinks to version controlled files
+(setq vc-follow-symlinks t)
+
 (provide 'better-defaults)

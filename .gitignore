@@ -1,6 +1,9 @@
-straight
+/straight
 .emacs.desktop
 .emacs.desktop.lock
 projectile.cache
 projectile-bookmarks.eld
 .swp
+/custom.el
+/lesser-evil-user-config.el
+/transient
