@@ -5,7 +5,7 @@
 (require 'which-key)
 
 (defvar eml/map (make-sparse-keymap))
-(defvar eml/binding-files (list (expand-file-name "leader-bindings.el" user-emacs-directory)))
+(defvar eml/binding-files (list "leader-bindings.el"))
 
 (defun eml/read-file (file-name)
   (with-temp-buffer
@@ -80,7 +80,7 @@
     (cl-loop
      for file in eml/binding-files
      do
-     (eml/set-bindings (eml/read-file file)))))
+     (eml/set-bindings (eml/read-file (expand-file-name file user-emacs-directory))))))
 
 (define-minor-mode multi-leader-mode
   "Multi leader mode"
