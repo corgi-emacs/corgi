@@ -227,6 +227,9 @@
    (or (cider-current-repl nil) (cider-current-repl 'any 'ensure))
    set-namespace))
 
+(defadvice cider-find-var (before add-evil-jump activate)
+  (evil-set-jump))
+
 ;; User config
 
 (setq straight-current-profile 'lesser-evil-user)
