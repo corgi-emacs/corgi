@@ -5,7 +5,7 @@
 (require 'which-key)
 
 (defvar eml/map (make-sparse-keymap))
-(defvar eml/binding-files (list (expand-file-name "leader_bindings2.el" user-emacs-directory)))
+(defvar eml/binding-files (list (expand-file-name "leader-bindings.el" user-emacs-directory)))
 
 (defun eml/read-file (file-name)
   (with-temp-buffer

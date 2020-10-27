@@ -19,6 +19,12 @@ What's in the box so far?
 - xclip
 - which-key
 - winum
+- undo-fu
+- clojure/cider/clj-refactor
+- aggressive-indent
+- company
+- projectile
+- magit
 
 While I love Spacemacs I find the sheer size of it can become an issue. It
 contains much functionality and many customizations that I don't need, and I
