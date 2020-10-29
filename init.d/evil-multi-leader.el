@@ -8,8 +8,8 @@
 (defvar eml/binding-files (list "leader-bindings.el"))
 
 (defun eml/read-file (file-name)
-  (with-temp-buffer
-    (insert-file-contents file-name)
+  (with-current-buffer (find-file-noselect "/home/arne/emacs-profiles/lesser-evil/leader-bindings.el")
+    (auto-revert-mode 1)
     (goto-char (point-min))
     (read (current-buffer))))
 
@@ -94,18 +94,10 @@
 
 ;;(eml/set-bindings (eml/read-file (car eml/binding-files)))
 
-(define-minor-mode global-multi-leader-mode
-  "Global minor mode for multi-leader support."
-  nil nil nil
-  (if global-multi-leader-mode
-      (progn
-        ;;(add-hook 'evil-local-mode-hook #'multi-leader-mode)
-        (add-hook 'after-change-major-mode-hook #'multi-leader-mode)
-        (multi-leader-mode 1))
-
-    (multi-leader-mode -1)
-    (remove-hook 'after-change-major-mode-hook #'multi-leader-mode)
-    ;;(remove-hook 'evil-local-mode-hook #'multi-leader-mode)
-    ))
+(define-global-minor-mode global-multi-leader-mode
+  multi-leader-mode
+  (lambda ()
+    (when (not (minibufferp))
+      (multi-leader-mode 1))))
 
 (provide 'evil-multi-leader)

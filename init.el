@@ -40,20 +40,18 @@
   :init (setq evil-want-keybinding nil)
   :config
   (evil-mode t)
+  (evil-set-undo-system 'undo-fu)
   (setq evil-move-cursor-back nil
         evil-move-beyond-eol t
-
-        evil-undo-system 'undo-fu
         evil-want-fine-undo t
-
         evil-mode-line-format 'before
         evil-normal-state-cursor '(box "orange")
         evil-insert-state-cursor '(box "green")
         evil-visual-state-cursor '(box "#F86155")))
 
-(use-package evil-collection
-  :after (evil)
-  :config (evil-collection-init))
+;; Taking this out because it changes cider-last-sexp in an infuriating way, and
+;; in terms of goals it overlaps with out multi-leader-keys appraoch
+;; (use-package evil-collection :after (evil) :config (evil-collection-init))
 
 (use-package evil-surround
   :config (global-evil-surround-mode 1))
@@ -103,23 +101,16 @@
   (add-hook 'clojure-mode-hook 'clj-refactor-mode))
 
 (use-package smartparens
-  :init
-  (require 'smartparens-config)
-  (add-hook 'cider-clojure-interaction-mode-hook 'smartparens-mode)
-  (add-hook 'cider-repl-mode-hook 'smartparens-mode)
-  (add-hook 'clojurex-mode-hook 'smartparens-mode)
-  (add-hook 'clojurescript-mode-hook 'smartparens-mode)
-  (add-hook 'clojurec-mode-hook 'smartparens-mode)
-  (add-hook 'clojure-mode-hook 'smartparens-mode)
-  (add-hook 'emacs-lisp-mode-hook 'smartparens-mode)
-  (add-hook 'lisp-data-mode-hook 'smartparens-mode))
+  :init (require 'smartparens-config)
+  :hook (prog-mode . smartparens-mode))
 
-(require 'a)
+(use-package a)
 
 (use-package evil-cleverparens
   ;; disabling these initial bindings because it changes M-d (kill-word) to
   ;; evil-cp-delete-sexp, and I happen to use M-d a lot. Might want to review
   ;; cause some of these seem useful.
+  :after (a)
   :init (setq evil-cleverparens-use-additional-bindings nil)
   :config
   ;; Restore some "normal" evil bindings. We have bindings and text objects for
@@ -220,6 +211,11 @@
 (require 'evil-multi-leader)
 (global-multi-leader-mode 1)
 
+;; Move to the front so these keys always have priority
+(setq minor-mode-map-alist (cons
+                            (cons 'multi-leader-mode eml/map)
+                            (delq multi-leader-mode minor-mode-map-alist)))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Patches
 
@@ -234,6 +230,9 @@
 
 (defadvice cider-find-var (before add-evil-jump activate)
   (evil-set-jump))
+
+;; Modified to account for the string that babashka outputs
+
 
 ;; Offer to create parent directories if they do not exist
 ;; http://iqbalansari.github.io/blog/2014/12/07/automatically-create-parent-directories-on-visiting-a-new-file-in-emacs/

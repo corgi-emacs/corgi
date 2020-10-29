@@ -91,12 +91,18 @@
     ("p" "Link with project" sesman-link-with-project)
     ("b" "Link with buffer" sesman-link-with-buffer)
     ("d" "Link with directory" sesman-link-with-directory)
-    ("l" "Link least specific" sesman-link-with-least-specific))
+    ("l" "Link least specific" sesman-link-with-least-specific)
+    ("u" "Unlink" sesman-unlink))
 
    ("r" "Refactor"
     ("t" "Threading"
      ("f" "Thread first" :refactor/thread-first)
-     ("l" "Thread last"  :refactor/thread-last)))
+     ("l" "Thread last"  :refactor/thread-last)
+     ("u" "Unwind thread" :refactor/unwind-thread))
+    ("s" "Sort ..."
+     ("n" "Sort namespace declaration" :refactor/sort-namespace-declaration))
+    ("a" "Add ..."
+     ("m" "Add missing" :refactor/add-missing)))
 
    ("'" "Jack in" :repl/jack-in)
    ("\"" "Jack in Alternate" :repl/jack-in-alt)
@@ -141,6 +147,10 @@
 
                   :refactor/thread-first clojure-thread-first-all
                   :refactor/thread-last clojure-thread-last-all
+                  :refactor/unwind-thread clojure-unwind-all
+
+                  :refactor/sort-namespace-declaration clojure-sort-ns
+                  :refactor/add-missing cljr-add-missing-libspec
 
                   :repl/jack-in ("Jack-in Clojure" cider-jack-in-clj)
                   :repl/jack-in-alt ("Jack in ClojureScript" cider-jack-in-clj)
