@@ -39,6 +39,7 @@
 
    ("j" "Jump"
     ("i" "Jump in buffer" counsel-imenu)
+    ("j" "Jump to character" avy-goto-char)
     ("c" "Jump to last change" goto-last-change))
 
    ("w" "Windows"
@@ -73,13 +74,15 @@
     ("b" "Eval buffer" :eval/buffer)
     ("e" "Eval form before cursor" :eval/last-sexp)
     ("p" "Eval and pretty print" :eval/last-sexp-pprint)
+    ;; TODO: make this consistent, in clojure buffers it prints to a comment, in elisp it inserts directly
     ("P" "Eval to comment" :eval/last-sexp-pprint-comment)
     ("n" "Eval ns form" :eval/ns-form)
     ("r" "Eval region" :eval/region))
 
    ("s" "REPL"
     ("s" "Toggle REPL" :repl/toggle)
-    ("q" "Quit REPL process" :repl/quit)
+    ("q" "Quit current REPL" :repl/quit)
+    ("Q" "Quit all active REPLs" :repl/quit-all)
     ("o" "Switch to Other REPL" :repl/other))
 
    ("g" "Go places"
@@ -102,7 +105,9 @@
     ("s" "Sort ..."
      ("n" "Sort namespace declaration" :refactor/sort-namespace-declaration))
     ("a" "Add ..."
-     ("m" "Add missing" :refactor/add-missing)))
+     ("m" "Add missing" :refactor/add-missing))
+    ("e" "Extract..."
+     ("f" "Extract function" :refactor/extract-function)))
 
    ("'" "Jack in" :repl/jack-in)
    ("\"" "Jack in Alternate" :repl/jack-in-alt)
@@ -119,7 +124,7 @@
                      :eval/last-sexp-pprint pprint-to-buffer-last-sexp
                      :eval/region cider-eval-region
                      :repl/toggle ielm-mode
-
+                     :eval/last-sexp-pprint-comment pprint-to-buffer-last-sexp-to-current-buffer
                      :jump/definition xref-find-definitions
                      :jump/back xref-pop-marker-stack
 
@@ -139,6 +144,7 @@
 
                   :repl/toggle cider-switch-to-repl-buffer
                   :repl/quit cider-quit
+                  :repl/quit-all lesser-evil/cider-quit-all
                   :repl/other cider-repl-switch-to-other
 
                   :jump/definition cider-find-var
@@ -151,6 +157,7 @@
 
                   :refactor/sort-namespace-declaration clojure-sort-ns
                   :refactor/add-missing cljr-add-missing-libspec
+                  :refactor/extract-function cljr-extract-function
 
                   :repl/jack-in ("Jack-in Clojure" cider-jack-in-clj)
                   :repl/jack-in-alt ("Jack in ClojureScript" cider-jack-in-clj)
