@@ -8,7 +8,7 @@
 (defvar eml/binding-files (list "leader-bindings.el"))
 
 (defun eml/read-file (file-name)
-  (with-current-buffer (find-file-noselect "/home/arne/emacs-profiles/lesser-evil/leader-bindings.el")
+  (with-current-buffer (find-file-noselect file-name)
     (auto-revert-mode 1)
     (goto-char (point-min))
     (read (current-buffer))))

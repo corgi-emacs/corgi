@@ -77,7 +77,8 @@
     ;; TODO: make this consistent, in clojure buffers it prints to a comment, in elisp it inserts directly
     ("P" "Eval to comment" :eval/last-sexp-pprint-comment)
     ("n" "Eval ns form" :eval/ns-form)
-    ("r" "Eval region" :eval/region))
+    ("r" "Eval region" :eval/region)
+    ("i" "Interrupt eval" :eval/interrupt))
 
    ("s" "REPL"
     ("s" "Toggle REPL" :repl/toggle)
@@ -141,6 +142,7 @@
                   :eval/buffer cider-eval-buffer
                   :eval/region cider-eval-region
                   :eval/registry-pprint lesser-evil/cider-pprint-register
+                  :eval/interrupt cider-interrupt
 
                   :repl/toggle cider-switch-to-repl-buffer
                   :repl/quit cider-quit

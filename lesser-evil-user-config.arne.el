@@ -20,6 +20,8 @@
 (setq cider-repl-display-help-banner nil)
 (setq cider-repl-pop-to-buffer-on-connect nil)
 
+(require 'cider)
+
 (defun babashka-quit ()
   (interactive)
   (setq sesman-links-alist
@@ -176,5 +178,7 @@ cider-mode-line
   (s/fdef 1))
 
 (use-package rainbow-mode)
+
+(use-package expand-region)
 
 (use-package auto-highlight-symbol)
