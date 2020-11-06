@@ -63,14 +63,14 @@
 
 (defun eml/set-bindings (binding-spec)
   ;;(message "---> bindings for %s %s" major-mode (buffer-name))
-  (let ((bindings (eml/kv-list-get binding-spec :bindings))
-        (modes (eml/kv-list-get binding-spec :modes))
-        (commands))
-    (cl-loop
-     for (mode mapping) in modes
-     do
-     (when (derived-mode-p mode)
-       (setq commands mapping)))
+  (let* ((bindings (eml/kv-list-get binding-spec :bindings))
+         (modes (eml/kv-list-get binding-spec :modes))
+         (commands
+          (cl-loop
+           for (mode mapping) in (reverse modes)
+           append
+           (when (derived-mode-p mode)
+             mapping))))
     (eml/set-bindings* eml/map bindings commands))
   (evil-normalize-keymaps))
 
