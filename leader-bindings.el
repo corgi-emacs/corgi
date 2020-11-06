@@ -151,15 +151,15 @@
                      :eval/buffer eval-buffer
                      :eval/last-sexp-pprint pprint-to-buffer-last-sexp
                      :eval/region cider-eval-region
-                     :repl/toggle ielm-mode
+                     :repl/toggle ielm
                      :eval/last-sexp-pprint-comment pprint-to-buffer-last-sexp-to-current-buffer
                      :jump/definition xref-find-definitions
                      :jump/back xref-pop-marker-stack
 
                      :refactor/thread-first lesser-evil/elisp-thread-first-all
-                     :refactor/thread-last lesser-evil/elisp-thread-last-all
-                     ))
-  ;;  (ielm-mode ( :repl/toggle ))
+                     :refactor/thread-last lesser-evil/elisp-thread-last-all))
+
+  (inferior-emacs-lisp-mode ( :repl/toggle lesser-evil/switch-to-last-elisp-buffer))
 
   (clojure-mode (
                  :sexp/slurp-forward sp-forward-slurp-sexp

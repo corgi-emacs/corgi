@@ -9,6 +9,14 @@ Repeated invocations toggle between the two most recently open buffers."
   (interactive)
   (switch-to-buffer (other-buffer (current-buffer) 1)))
 
+(defun lesser-evil/switch-to-last-elisp-buffer ()
+  (interactive)
+  (when-let ((the-buf (seq-find (lambda (b)
+                                  (with-current-buffer b
+                                    (derived-mode-p 'emacs-lisp-mode)))
+                                (buffer-list))))
+    (pop-to-buffer the-buf)))
+
 (defun lesser-evil/double-columns ()
   "Simplified version of spacemacs/window-split-double-column"
   (interactive)

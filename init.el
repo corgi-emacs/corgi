@@ -82,8 +82,7 @@
 (use-package which-key
   :after (evil-leader seq cl-lib)
   :diminish which-key-mode
-  :config
-  (which-key-mode 1))
+  :config (which-key-mode 1))
 
 (use-package winum
   :config (winum-mode 1))
@@ -106,6 +105,8 @@
   (setq cider-preferred-build-tool 'clojure-cli
         ;; make sure we can always debug nrepl issues
         nrepl-log-messages t)
+
+  ;; TODO: clean this up, submit to upstream where possible
 
   ;; New function, should go upstream. Kill all associated REPLs
   (defun lesser-evil/cider-quit-all ()
@@ -163,11 +164,11 @@
         cljr-clojure-test-declaration "[clojure.test :refer [deftest testing is are use-fixtures run-tests join-fixtures]]"
         cljr-eagerly-build-asts-on-startup nil
         cljr-warn-on-eval nil)
-  ;; (add-hook 'cider-clojure-interaction-mode-hook 'clj-refactor-mode) ;; => is this actually a thing?
-  (add-hook 'clojurex-mode-hook 'clj-refactor-mode)
-  (add-hook 'clojurescript-mode-hook 'clj-refactor-mode)
-  (add-hook 'clojurec-mode-hook 'clj-refactor-mode)
-  (add-hook 'clojure-mode-hook 'clj-refactor-mode))
+  :hook ((clojurex-mode-hook
+          clojurescript-mode-hook
+          clojurec-mode-hook
+          clojure-mode-hook)
+         . clj-refactor-mode))
 
 (use-package smartparens
   :init (require 'smartparens-config)
@@ -181,25 +182,28 @@
 
 (use-package aggressive-indent
   :diminish aggressive-indent-mode
-  :init
-  (add-hook 'cider-clojure-interaction-mode-hook 'aggressive-indent-mode)
-  (add-hook 'clojurex-mode-hook 'aggressive-indent-mode)
-  (add-hook 'clojurescript-mode-hook 'aggressive-indent-mode)
-  (add-hook 'clojurec-mode-hook 'aggressive-indent-mode)
-  (add-hook 'clojure-mode-hook 'aggressive-indent-mode)
-  (add-hook 'emacs-lisp-mode-hook 'aggressive-indent-mode)
-  (add-hook 'lisp-data-mode-hook 'aggressive-indent-mode))
+  :hook ((clojurex-mode-hook
+          clojurescript-mode-hook
+          clojurec-mode-hook
+          clojure-mode-hook
+          emacs-lisp-mode-hook
+          lisp-data-mode-hook)
+         . aggressive-indent-mode))
+
+(use-package rainbow-delimiters
+  :hook ((cider-repl-mode-hook
+          clojurex-mode-hook
+          clojurescript-mode-hook
+          clojurec-mode-hook
+          clojure-mode-hook
+          emacs-lisp-mode-hook
+          lisp-data-mode-hook
+          inferior-emacs-lisp-mode)
+         . rainbow-delimiters-mode))
 
 (use-package company
   :diminish company-mode
-  :init
-  (add-hook 'cider-clojure-interaction-mode-hook 'company-mode)
-  (add-hook 'cider-repl-mode-hook 'company-mode)
-  (add-hook 'clojurex-mode-hook 'company-mode)
-  (add-hook 'clojurescript-mode-hook 'company-mode)
-  (add-hook 'clojurec-mode-hook 'company-mode)
-  (add-hook 'clojure-mode-hook 'company-mode)
-  (add-hook 'emacs-lisp-mode-hook 'company-mode))
+  :hook (prog-mode . company-mode))
 
 (use-package projectile
   :config (projectile-global-mode))
@@ -209,8 +213,7 @@
 
 (use-package elisp-slime-nav
   :config
-  (add-hook 'emacs-lisp-mode-hook 'turn-on-elisp-slime-nav-mode)
-  (add-hook 'ielm-mode-hook 'turn-on-elisp-slime-nav-mode))
+  :hook ((emacs-lisp-mode ielm-mode) . turn-on-elisp-slime-nav-mode))
 
 (use-package pprint-to-buffer
   :straight (pprint-to-buffer
@@ -257,8 +260,6 @@
 
 (use-package evil-magit
   :after (magit))
-
-(use-package rainbow-mode)
 
 (use-package expand-region)
 
