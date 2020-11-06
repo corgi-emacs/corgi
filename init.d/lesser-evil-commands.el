@@ -31,4 +31,8 @@ Repeated invocations toggle between the two most recently open buffers."
   (interactive)
   (find-file (expand-file-name "leader-bindings.el" user-emacs-directory)))
 
+(defun lesser-evil/open-user-config ()
+  (interactive)
+  (find-file (expand-file-name "lesser-evil-user-config.el" user-emacs-directory)))
+
 (provide 'lesser-evil-commands)
