@@ -1,7 +1,28 @@
 (:bindings
  (("TAB" "Indent" :format/tab-indent)
-  (">" "Slurp" sp-forward-slurp-sexp)
-  ("<" "Barf" sp-forward-barf-sexp)
+  (">" "Slurp" :sexp/slurp-forward)
+  ("<" "Barf" :sexp/barf-forward)
+
+  ;; These override evil-window-bottom / evil-window-top. I don't like that we
+  ;; are redefining built-in default vim bindings, but we do need a single key
+  ;; motion for forward/backward sexp. Note that to make this work we remove
+  ;; these bindings in init.el from evil-motion-state-map
+  ("L" "Forward sexp" :sexp/forward)
+  ("H" "Backward sexp" :sexp/backward)
+  ("M-l" "End of outer sexp" evil-cp-end-of-defun)
+  ("M-h" "Start of outer sexp" evil-cp-beginning-of-defun)
+
+  ;; Leaving these evil-cleverparens style bindings out for now, instead
+  ;; sticking to the default vim-style bindings
+  ;; ("[" "Previous opening delimiter" evil-cp-previous-opening)
+  ;; ("]" "Next closing delimiter" evil-cp-next-closing)
+  ;; ("{" "Next opening delimiter" evil-cp-next-opening)
+  ;; ("}" "Previous closing delimiter" evil-cp-previous-closing)
+  ;; ("(" "Backward up sexp" evil-cp-backward-up-sexp)
+  ;; (")" "Up sexp" evil-cp-up-sexp)
+
+  ("<M-up>" "Expand region" er/expand-region)
+  ("<M-down>" "Expand region" er/contract-region)
 
   ("SPC" "Global leader key"
    ("b" "Buffer commands"
@@ -16,7 +37,8 @@
     ("A" "Find alternate file" find-alternate-file)
     ("e" "Emacs files"
      ("i" "Open init.el" lesser-evil/open-init-el)
-     ("b" "Open bindings file" lesser-evil/open-bindings)))
+     ("b" "Open bindings file" lesser-evil/open-bindings)
+     ("u" "Open user config" lesser-evil/open-user-config)))
 
    ("s" "Search commands"
     ("s" "Search in buffer" swiper)
@@ -118,7 +140,12 @@
  ;; ","  'plexus-clojure-extras/cider-pprint-register
 
  :modes
- ((prog-mode ( :format/tab-indent indent-for-tab-command))
+ ((prog-mode ( :format/tab-indent indent-for-tab-command
+               :sexp/slurp-forward sp-forward-slurp-sexp
+               :sexp/barf-forward sp-forward-barf-sexp
+               :sexp/forward evil-cp-forward-sexp
+               :sexp/backward evil-cp-backward-sexp
+               ))
 
   (emacs-lisp-mode ( :eval/last-sexp eval-last-sexp
                      :eval/buffer eval-buffer
@@ -134,36 +161,42 @@
                      ))
   ;;  (ielm-mode ( :repl/toggle ))
 
-  (clojure-mode ( :eval/last-sexp cider-eval-last-sexp
-                  :eval/last-sexp-pprint cider-pprint-eval-last-sexp
-                  :eval/last-sexp-pprint-comment cider-pprint-eval-last-sexp-to-comment
-                  :eval/ns-form cider-eval-ns-form
-                  :eval/last-sexp-replace cider-eval-last-sexp-and-replace
-                  :eval/buffer cider-eval-buffer
-                  :eval/region cider-eval-region
-                  :eval/registry-pprint lesser-evil/cider-pprint-register
-                  :eval/interrupt cider-interrupt
+  (clojure-mode (
+                 :sexp/slurp-forward sp-forward-slurp-sexp
+                 :sexp/barf-forward sp-forward-barf-sexp
+                 :sexp/forward clojure-forward-logical-sexp
+                 :sexp/backward clojure-backward-logical-sexp
 
-                  :repl/toggle cider-switch-to-repl-buffer
-                  :repl/quit cider-quit
-                  :repl/quit-all lesser-evil/cider-quit-all
-                  :repl/other cider-repl-switch-to-other
+                 :eval/last-sexp cider-eval-last-sexp
+                 :eval/last-sexp-pprint cider-pprint-eval-last-sexp
+                 :eval/last-sexp-pprint-comment cider-pprint-eval-last-sexp-to-comment
+                 :eval/ns-form cider-eval-ns-form
+                 :eval/last-sexp-replace cider-eval-last-sexp-and-replace
+                 :eval/buffer cider-eval-buffer
+                 :eval/region cider-eval-region
+                 :eval/registry-pprint lesser-evil/cider-pprint-register
+                 :eval/interrupt cider-interrupt
 
-                  :jump/definition cider-find-var
-                  :jump/back cider-pop-back
-                  :jump/ns cider-find-ns
+                 :repl/toggle cider-switch-to-repl-buffer
+                 :repl/quit cider-quit
+                 :repl/quit-all lesser-evil/cider-quit-all
+                 :repl/other cider-repl-switch-to-other
 
-                  :refactor/thread-first clojure-thread-first-all
-                  :refactor/thread-last clojure-thread-last-all
-                  :refactor/unwind-thread clojure-unwind-all
+                 :jump/definition cider-find-var
+                 :jump/back cider-pop-back
+                 :jump/ns cider-find-ns
 
-                  :refactor/sort-namespace-declaration clojure-sort-ns
-                  :refactor/add-missing cljr-add-missing-libspec
-                  :refactor/extract-function cljr-extract-function
+                 :refactor/thread-first clojure-thread-first-all
+                 :refactor/thread-last clojure-thread-last-all
+                 :refactor/unwind-thread clojure-unwind-all
 
-                  :repl/jack-in ("Jack-in Clojure" cider-jack-in-clj)
-                  :repl/jack-in-alt ("Jack in ClojureScript" cider-jack-in-clj)
-                  :repl/jack-in-combined ("Jack in Clj+Cljs" cider-jack-in-clj&cljs)))
+                 :refactor/sort-namespace-declaration clojure-sort-ns
+                 :refactor/add-missing cljr-add-missing-libspec
+                 :refactor/extract-function cljr-extract-function
+
+                 :repl/jack-in ("Jack-in Clojure" cider-jack-in-clj)
+                 :repl/jack-in-alt ("Jack in ClojureScript" cider-jack-in-clj)
+                 :repl/jack-in-combined ("Jack in Clj+Cljs" cider-jack-in-clj&cljs)))
 
   (cider-repl-mode ( :repl/toggle cider-switch-to-last-clojure-buffer
                      :repl/quit cider-quit
@@ -171,8 +204,7 @@
 
                      :jump/definition cider-find-var
                      :jump/back cider-pop-back
-                     :jump/ns cider-find-ns
-                     ))
+                     :jump/ns cider-find-ns))
 
   (c-mode ( :jump/definition xref-find-definitions
             :jump/back xref-pop-marker-stack))))

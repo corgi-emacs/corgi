@@ -13,8 +13,10 @@
 (straight-use-package 'use-package)
 (setq straight-use-package-by-default t)
 
-;; mode-line-format
-;; minor-mode-alist
+(use-package seq)
+(use-package cl-lib)
+(use-package a)
+
 (use-package diminish
   :diminish
   elisp-slime-nav-mode
@@ -57,20 +59,18 @@
         evil-mode-line-format 'before
         evil-normal-state-cursor '(box "orange")
         evil-insert-state-cursor '(box "green")
-        evil-visual-state-cursor '(box "#F86155")))
+        evil-visual-state-cursor '(box "#F86155")
+        evil-emacs-state-cursor  '(box "purple"))
+
+  ;; Prevent evil-motion-state from shadowing previous/next sexp
+  (require 'evil-maps)
+  (define-key evil-motion-state-map "L" nil)
+  (define-key evil-motion-state-map "M" nil))
 
 (use-package evil-collection
   :after (evil)
   :config
-  (evil-collection-init)
-  ;; Stop changing how last-sexp works. We don't move cursor back and allow
-  ;; beyond-eol, so it makes no sense to munge this.
-  (cl-loop
-   for fun in '(elisp--preceding-sexp cider-last-sexp pp-last-sexp)
-   do
-   (advice-mapc
-    (lambda (advice _props) (advice-remove fun advice))
-    fun)))
+  (evil-collection-init))
 
 (use-package evil-surround
   :config (global-evil-surround-mode 1))
@@ -79,21 +79,16 @@
 (use-package xclip
   :config (xclip-mode t))
 
-(use-package seq)
-(use-package cl-lib)
-
 (use-package which-key
   :after (evil-leader seq cl-lib)
   :diminish which-key-mode
   :config
-  (which-key-mode t))
+  (which-key-mode 1))
 
 (use-package winum
-  :config (winum-mode t))
+  :config (winum-mode 1))
 
 ;;; Lisp setup
-
-magic-mode-alist
 
 (use-package clojure-mode
   :magic ("^#![^\n]*/\\(clj\\|clojure\\|bb\\|lumo\\)" . clojure-mode)
@@ -102,32 +97,15 @@ magic-mode-alist
         ;; Because of CIDER's insistence to send forms to all linked REPLs, we
         ;; *have* to be able to switch cljc buffer to clj/cljs mode without
         ;; cider complaining.
-        clojure-verify-major-mode nil)
-
-  (defun lesser-evil/clojure-backward-sexp-advice (command &rest args)
-    (if (and (called-interactively-p 'any) (derived-mode-p 'clojure-mode))
-        (funcall #'clojure-backward-logical-sexp (when (numberp (car args)) (car args)))
-      (apply command args)))
-
-  (defun lesser-evil/clojure-forward-sexp-advice (command &rest args)
-    (if (and (called-interactively-p 'any) (derived-mode-p 'clojure-mode))
-        (funcall #'clojure-forward-logical-sexp (when (numberp (car args)) (car args)))
-      (apply command args)))
-
-  (advice-add 'forward-sexp :around #'lesser-evil/clojure-forward-sexp-advice)
-  (advice-add 'backward-sexp :around #'lesser-evil/clojure-backward-sexp-advice)
-  (advice-add 'sp-forward-sexp :around #'lesser-evil/clojure-forward-sexp-advice)
-  (advice-add 'sp-backward-sexp :around #'lesser-evil/clojure-backward-sexp-advice)
-  (advice-add 'evil-cp-forward-sexp :around #'lesser-evil/clojure-forward-sexp-advice)
-  (advice-add 'evil-cp-backward-sexp :around #'lesser-evil/clojure-backward-sexp-advice)
-  )
+        clojure-verify-major-mode nil))
 
 (use-package cider
   :after (clojure-mode)
   :diminish cider-mode
   :config
-  ;; make sure we can always debug nrepl issues
-  (setq nrepl-log-messages t)
+  (setq cider-preferred-build-tool 'clojure-cli
+        ;; make sure we can always debug nrepl issues
+        nrepl-log-messages t)
 
   ;; New function, should go upstream. Kill all associated REPLs
   (defun lesser-evil/cider-quit-all ()
@@ -156,7 +134,7 @@ magic-mode-alist
 
   (advice-add 'cider-current-repl :around #'lesser-evil/around-cider-current-repl)
 
-  ;; This essentiall redefined cider-repls. The main thing it does is return all
+  ;; This essentially redefines cider-repls. The main thing it does is return all
   ;; REPLs by using sesman-current-sessions (plural) instead of
   ;; sesman-current-session. It also falls back to the babashka repl if no repls
   ;; are connected/linked, so we can always eval.
@@ -196,30 +174,10 @@ magic-mode-alist
   :diminish smartparens-mode
   :hook (prog-mode . smartparens-mode))
 
-(use-package a)
-
+;; We don't actually enable cleverparens, because most of their bindings we
+;; don't want, we install our own bindings for specific sexp movements
 (use-package evil-cleverparens
-  ;; disabling these initial bindings because it changes M-d (kill-word) to
-  ;; evil-cp-delete-sexp, and I happen to use M-d a lot. Might want to review
-  ;; cause some of these seem useful.
-  :after (a)
-  :diminish
-  :init (setq evil-cleverparens-use-additional-bindings nil)
-  :config
-  ;; Restore some "normal" evil bindings. We have bindings and text objects for
-  ;; structural editing, so no need to override (and make unavailable) these
-  ;; "plain" operations.
-  (setq evil-cp-regular-bindings
-        (a-assoc evil-cp-regular-bindings
-                 "x" 'evil-delete-char
-                 "d" 'evil-delete
-                 "D" 'evil-delete-line
-                 "P" 'evil-paste-before
-                 "y" 'evil-yank
-                 "Y" 'evil-yank-line))
-  (evil-cp--enable-regular-bindings)
-  :after (evil clojure-mode smartparens)
-  :hook (smartparens-mode . evil-cleverparens-mode))
+  :after (evil clojure-mode smartparens))
 
 (use-package aggressive-indent
   :diminish aggressive-indent-mode
@@ -299,6 +257,10 @@ magic-mode-alist
 
 (use-package evil-magit
   :after (magit))
+
+(use-package rainbow-mode)
+
+(use-package expand-region)
 
 (use-package org)
 

@@ -3,7 +3,7 @@
 (when (not (server-running-p))
   (server-start))
 
-(set-frame-font "Iosevka Fixed SS14-14")
+(set-frame-font "Iosevka Fixed SS14-20")
 
 (global-linum-mode 1)
 
@@ -16,7 +16,6 @@
 
 ;; (define-key evil-motion-state-map (kbd "TAB") #'indent-for-tab-command)
 
-(setq cider-preferred-build-tool 'clojure-cli)
 (setq cider-repl-display-help-banner nil)
 (setq cider-repl-pop-to-buffer-on-connect nil)
 
@@ -77,28 +76,11 @@
       (set-process-coding-system serv-proc 'utf-8-unix 'utf-8-unix)))
   nil)
 
-(with-current-buffer (get-buffer "*scratch*")
-  (erase-buffer)
-  (insert ";; This is a scratch buffer for temporary code and trying things out.
-;; You can evaluate Clojure code here with , e e
-")
-  (goto-char (point-max)))
-
-(babashka-jack-in
- (lambda (_)
-   (sesman-link-session 'CIDER '("babashka") 'buffer (get-buffer "*scratch*"))))
-
-
 (set-register ?k "(do (require 'kaocha.repl) (kaocha.repl/run))")
 (set-register ?K "(do (require 'kaocha.repl) (kaocha.repl/run-all))")
 (set-register ?r "(user/refresh)")
 (set-register ?g "(user/go)")
 (set-register ?b "(user/browse)")
-
-
-
-cider-mode-line
-;;=> (:eval (format " cider[%s]" (cider--modeline-info)))
 
 (defun lesser-evil/cider-modeline-info ()
   (when (derived-mode-p 'clojure-mode)
@@ -177,8 +159,17 @@ cider-mode-line
   (prop/for-all 1)
   (s/fdef 1))
 
-(use-package rainbow-mode)
-
-(use-package expand-region)
-
 (use-package auto-highlight-symbol)
+
+(with-current-buffer (get-buffer "*scratch*")
+  (erase-buffer)
+  (insert ";; This is a scratch buffer for temporary code and trying things out.
+;; You can evaluate Clojure code here with , e e
+")
+  (goto-char (point-max))
+  (dolist (window (get-buffer-window-list "*scratch*"))
+    (set-window-point window (point-max))))
+
+(babashka-jack-in
+ (lambda (_)
+   (sesman-link-session 'CIDER '("babashka") 'buffer (get-buffer "*scratch*"))))
