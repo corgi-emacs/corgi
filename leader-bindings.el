@@ -100,7 +100,8 @@
     ("P" "Eval to comment" :eval/last-sexp-pprint-comment)
     ("n" "Eval ns form" :eval/ns-form)
     ("r" "Eval region" :eval/region)
-    ("i" "Interrupt eval" :eval/interrupt))
+    ("i" "Interrupt eval" :eval/interrupt)
+    ("-" "Eval up to point" :eval/up-to-point))
 
    ("s" "REPL"
     ("s" "Toggle REPL" :repl/toggle)
@@ -176,6 +177,7 @@
                  :eval/region cider-eval-region
                  :eval/registry-pprint lesser-evil/cider-pprint-register
                  :eval/interrupt cider-interrupt
+                 :eval/up-to-point cider-eval-sexp-up-to-point
 
                  :repl/toggle cider-switch-to-repl-buffer
                  :repl/quit cider-quit
