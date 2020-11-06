@@ -182,22 +182,22 @@
 
 (use-package aggressive-indent
   :diminish aggressive-indent-mode
-  :hook ((clojurex-mode-hook
-          clojurescript-mode-hook
-          clojurec-mode-hook
-          clojure-mode-hook
-          emacs-lisp-mode-hook
-          lisp-data-mode-hook)
+  :hook ((clojurex-mode
+          clojurescript-mode
+          clojurec-mode
+          clojure-mode
+          emacs-lisp-mode
+          lisp-data-mode)
          . aggressive-indent-mode))
 
 (use-package rainbow-delimiters
-  :hook ((cider-repl-mode-hook
-          clojurex-mode-hook
-          clojurescript-mode-hook
-          clojurec-mode-hook
-          clojure-mode-hook
-          emacs-lisp-mode-hook
-          lisp-data-mode-hook
+  :hook ((cider-repl-mode
+          clojurex-mode
+          clojurescript-mode
+          clojurec-mode
+          clojure-mode
+          emacs-lisp-mode
+          lisp-data-mode
           inferior-emacs-lisp-mode)
          . rainbow-delimiters-mode))
 
