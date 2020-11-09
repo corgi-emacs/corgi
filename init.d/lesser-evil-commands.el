@@ -7,7 +7,7 @@
   "Switch to previously open buffer.
 Repeated invocations toggle between the two most recently open buffers."
   (interactive)
-  (switch-to-buffer (other-buffer (current-buffer) 1)))
+  (switch-to-buffer (other-buffer (current-buffer))))
 
 (defun lesser-evil/switch-to-last-elisp-buffer ()
   (interactive)

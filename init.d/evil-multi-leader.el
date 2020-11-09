@@ -69,7 +69,7 @@
           (cl-loop
            for (mode mapping) in (reverse modes)
            append
-           (when (derived-mode-p mode)
+           (when (or (eql 'global mode) (derived-mode-p mode))
              mapping))))
     (eml/set-bindings* eml/map bindings commands))
   (evil-normalize-keymaps))

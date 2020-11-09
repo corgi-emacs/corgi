@@ -27,7 +27,10 @@
   ("SPC" "Global leader key"
    ("b" "Buffer commands"
     ("b" "Switch buffer" ivy-switch-buffer)
-    ("d" "Kill buffer" kill-this-buffer))
+    ("d" "Kill buffer" kill-this-buffer)
+    ("l" "List buffers" list-buffers)
+    ("r" "Rename buffer" rename-buffer)
+    ("w" "Toggle read-only" read-only-mode))
 
    ("f" "File commands"
     ("f" "Find file" counsel-find-file)
@@ -141,12 +144,12 @@
  ;; ","  'plexus-clojure-extras/cider-pprint-register
 
  :modes
- ((prog-mode ( :format/tab-indent indent-for-tab-command
-               :sexp/slurp-forward sp-forward-slurp-sexp
-               :sexp/barf-forward sp-forward-barf-sexp
-               :sexp/forward evil-cp-forward-sexp
-               :sexp/backward evil-cp-backward-sexp
-               ))
+ ((global ( :sexp/slurp-forward sp-forward-slurp-sexp
+            :sexp/barf-forward sp-forward-barf-sexp
+            :sexp/forward evil-cp-forward-sexp
+            :sexp/backward evil-cp-backward-sexp))
+
+  (prog-mode ( :format/tab-indent indent-for-tab-command))
 
   (emacs-lisp-mode ( :eval/last-sexp eval-last-sexp
                      :eval/buffer eval-buffer

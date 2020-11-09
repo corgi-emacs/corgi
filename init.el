@@ -96,7 +96,17 @@
         ;; Because of CIDER's insistence to send forms to all linked REPLs, we
         ;; *have* to be able to switch cljc buffer to clj/cljs mode without
         ;; cider complaining.
-        clojure-verify-major-mode nil))
+        clojure-verify-major-mode nil)
+
+  ;; TODO: get this upstream. #_ is not a logical sexp
+  (defun lesser-evil/clojure--looking-at-non-logical-sexp (command)
+    "Return non-nil if text after point is \"non-logical\" sexp.
+\"Non-logical\" sexp are ^metadata and #reader.macros."
+    (comment-normalize-vars)
+    (comment-forward (point-max))
+    (looking-at-p "\\(?:#?\\^\\)\\|#:?:?[[:alpha:]]\\|#_"))
+
+  (advice-add #'clojure--looking-at-non-logical-sexp :around #'lesser-evil/clojure--looking-at-non-logical-sexp))
 
 (use-package cider
   :after (clojure-mode)
@@ -133,7 +143,7 @@
        (funcall command type))
      (get-buffer "*babashka-repl*")))
 
-  (advice-add 'cider-current-repl :around #'lesser-evil/around-cider-current-repl)
+  (advice-add #'cider-current-repl :around #'lesser-evil/around-cider-current-repl)
 
   ;; This essentially redefines cider-repls. The main thing it does is return all
   ;; REPLs by using sesman-current-sessions (plural) instead of
@@ -153,7 +163,7 @@
                       repls)
           (list (get-buffer "*babashka-repl*")))))
 
-  (advice-add 'cider-repls :around #'lesser-evil/around-cider-repls))
+  (advice-add #'cider-repls :around #'lesser-evil/around-cider-repls))
 
 (use-package clj-refactor
   :after (cider)
