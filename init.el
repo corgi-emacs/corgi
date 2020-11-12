@@ -136,12 +136,15 @@
   ;; repeatedly to close all REPLs in a process. It also means that , s s will go
   ;; to any REPL if there is one open.
   (defun lesser-evil/around-cider-current-repl (command &optional type ensure)
-    (or
-     (if (not type)
-         (or (funcall command nil)
-             (funcall command 'any))
-       (funcall command type))
-     (get-buffer "*babashka-repl*")))
+    (let ((repl (or
+                 (if (not type)
+                     (or (funcall command nil)
+                         (funcall command 'any))
+                   (funcall command type))
+                 (get-buffer "*babashka-repl*"))))
+      (if (and ensure (null repl))
+          (cider--no-repls-user-error type)
+        repl)))
 
   (advice-add #'cider-current-repl :around #'lesser-evil/around-cider-current-repl)
 
@@ -163,7 +166,36 @@
                       repls)
           (list (get-buffer "*babashka-repl*")))))
 
-  (advice-add #'cider-repls :around #'lesser-evil/around-cider-repls))
+  (advice-add #'cider-repls :around #'lesser-evil/around-cider-repls)
+
+  (defun lesser-evil/cider-eval-last-sexp-and-replace ()
+    "Alternative to cider-eval-last-sexp-and-replace, but kills
+clojure logical sexp instead of ELisp sexp, and pprints the
+result."
+    (interactive)
+    (let ((last-sexp (cider-last-sexp)))
+      ;; we have to be sure the evaluation won't result in an error
+      (cider-nrepl-sync-request:eval last-sexp)
+      ;; seems like the sexp is valid, so we can safely kill it
+      (let ((opoint (point)))
+        (clojure-backward-logical-sexp)
+        (kill-region (point) opoint))
+      (cider-interactive-eval last-sexp
+                              (cider-eval-pprint-with-multiline-comment-handler
+                               (current-buffer)
+                               (set-marker (make-marker) (point))
+                               ""
+                               " "
+                               "")
+                              nil
+                              (cider--nrepl-print-request-map fill-column))))
+
+  (defun lesser-evil/cider-pprint-eval-last-sexp-insert ()
+    (interactive)
+    (let ((cider-comment-prefix "")
+          (cider-comment-continued-prefix " ")
+          (cider-comment-postfix ""))
+      (cider-pprint-eval-last-sexp-to-comment))))
 
 (use-package clj-refactor
   :after (cider)

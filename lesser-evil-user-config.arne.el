@@ -3,7 +3,7 @@
 (when (not (server-running-p))
   (server-start))
 
-(set-frame-font "Iosevka Fixed SS14-20")
+(set-frame-font "Iosevka Fixed SS14-19")
 
 (global-linum-mode 1)
 
@@ -78,7 +78,7 @@
 
 (set-register ?k "(do (require 'kaocha.repl) (kaocha.repl/run))")
 (set-register ?K "(do (require 'kaocha.repl) (kaocha.repl/run-all))")
-(set-register ?r "(user/refresh)")
+(set-register ?r "(do (require 'user :reload) (user/reset))")
 (set-register ?g "(user/go)")
 (set-register ?b "(user/browse)")
 

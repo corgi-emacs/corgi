@@ -76,8 +76,16 @@
     ("o" "Go to other window" other-window)
     ("d" "Delete window" delete-window))
 
+   ;; TODO: this is temporary, using the keybinding from Spacemac's lisp editing
+   ;; mode, but we don't want to copy lisp editing mode, so we might look for
+   ;; more suitable bindings for this
    ("k" "Structural editing"
     ("E" "Splice backwards" sp-splice-sexp-killing-backward))
+
+   ("t" "Toggle modes"
+    ("a" "Toggle aggressive indent mode" aggressive-indent-mode)
+    ("l" "Toggle line numbers" linum-mode))
+
 
    ("SPC" "Execute command (M-x)" counsel-M-x)
    ("u" "Universal prefix" universal-argument)
@@ -115,7 +123,8 @@
    ("g" "Go places"
     ("g" "Go to definition" :jump/definition)
     ("b" "Go back" :jump/back)
-    ("n" "Go to namespace" :jump/ns))
+    ("n" "Go to namespace" :jump/ns)
+    ("t" "Go to test/implemenentation" projectile-toggle-between-implementation-and-test))
 
    ("l" "Link to REPL"
     ("p" "Link with project" sesman-link-with-project)
@@ -206,6 +215,8 @@
   (cider-repl-mode ( :repl/toggle cider-switch-to-last-clojure-buffer
                      :repl/quit cider-quit
                      :repl/other cider-repl-switch-to-other
+
+                     :eval/registry-pprint lesser-evil/cider-pprint-register
 
                      :jump/definition cider-find-var
                      :jump/back cider-pop-back
