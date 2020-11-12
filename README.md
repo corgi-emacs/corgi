@@ -1,4 +1,4 @@
-# Lesser Evil
+# Corgi
 
 A minimalistic evil-based Emacs configuration that feels like a slimmed down version of Spacemacs.
 
