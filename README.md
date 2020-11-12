@@ -132,7 +132,7 @@ issues because of slightly different package versions.
 This config makes a few clear, non-negotiable decisions. It's evil based, has
 structural editing, includes org-mode, etc. But on some things it does not have
 an opinion. The theme, font, desktop-mode, linum-mode, mode-line are all things
-you can configure in your own `lesser-evil-user-config.el`.
+you can configure in your own `corgi-user-config.el`.
 
 ## License
 

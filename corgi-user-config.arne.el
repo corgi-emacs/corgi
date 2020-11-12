@@ -3,6 +3,12 @@
 (when (not (server-running-p))
   (server-start))
 
+;; Enable copy-paste to/from x clipboard when running in a terminal
+(use-package xclip
+  :config
+  (unless (executable-find xclip-program)
+    (xclip-mode t)))
+
 (set-frame-font "Iosevka Fixed SS14-19")
 
 (global-linum-mode 1)
@@ -33,7 +39,7 @@
 (defun babashka-jack-in (&optional connected-callback)
   (interactive)
   (babashka-quit)
-  (let* ((cmd "bb --nrepl-server")
+  (let* ((cmd "bb --nrepl-server 0") ;; Until https://github.com/babashka/babashka.nrepl/pull/32 you'll need your own build of bb
          (serv-buf (get-buffer-create "*babashka-nrepl-server*"))
          (host "127.0.0.1")
          (repl-builder (lambda (port)
@@ -82,7 +88,7 @@
 (set-register ?g "(user/go)")
 (set-register ?b "(user/browse)")
 
-(defun lesser-evil/cider-modeline-info ()
+(defun corgi/cider-modeline-info ()
   (when (derived-mode-p 'clojure-mode)
     (let ((source-project-name (projectile-project-name)))
       (if-let* ((repls (ignore-errors (cider-repls (cider-repl-type-for-buffer)))))
@@ -129,7 +135,7 @@
                                        evil-mode-line-tag
                                        (vc-mode vc-mode)
                                        " "
-                                       (:eval (lesser-evil/cider-modeline-info))
+                                       (:eval (corgi/cider-modeline-info))
                                        " "
                                        mode-line-modes
                                        mode-line-misc-info

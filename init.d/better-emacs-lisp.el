@@ -5,7 +5,7 @@
 
 ;; https://endlessparentheses.com/eval-result-overlays-in-emacs-lisp.html
 
-(defun lesser-evil/eval-overlay (value point)
+(defun corgi/eval-overlay (value point)
   (cider--make-result-overlay (format "%S" value)
     :where point
     :duration 'command)
@@ -14,17 +14,17 @@
 
 (advice-add 'eval-region :around
             (lambda (f beg end &rest r)
-              (lesser-evil/eval-overlay
+              (corgi/eval-overlay
                (apply f beg end r)
                end)))
 
 (advice-add 'eval-last-sexp :filter-return
             (lambda (r)
-              (lesser-evil/eval-overlay r (point))))
+              (corgi/eval-overlay r (point))))
 
 (advice-add 'eval-defun :filter-return
             (lambda (r)
-              (lesser-evil/eval-overlay
+              (corgi/eval-overlay
                r
                (save-excursion
                  (end-of-defun)
@@ -33,7 +33,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Thread-first / thread-last, ported from clojure-mode
 
-(defun lesser-evil/thread ()
+(defun corgi/thread ()
   "Thread by one more level an existing threading macro."
   (interactive)
   (ignore-errors
@@ -48,21 +48,21 @@
             ((looking-at "thread-last") (clojure--thread-last)))
       (clojure--fix-sexp-whitespace 'move-out))))
 
-(defun lesser-evil/elisp--thread-all (first-or-last-thread but-last)
+(defun corgi/elisp--thread-all (first-or-last-thread but-last)
   (save-excursion
     (insert-parentheses 1)
     (insert first-or-last-thread))
-  (while (save-excursion (lesser-evil/thread)))
+  (while (save-excursion (corgi/thread)))
   (when (or but-last clojure-thread-all-but-last)
     (clojure-unwind)))
 
-(defun lesser-evil/elisp-thread-first-all (but-last)
+(defun corgi/elisp-thread-first-all (but-last)
   (interactive "P")
-  (lesser-evil/elsip--thread-all "thread-first " but-last))
+  (corgi/elsip--thread-all "thread-first " but-last))
 
-(defun lesser-evil/elisp-thread-last-all (but-last)
+(defun corgi/elisp-thread-last-all (but-last)
   (interactive "P")
-  (lesser-evil/elisp--thread-all "thread-last " but-last))
+  (corgi/elisp--thread-all "thread-last " but-last))
 
 
 (provide 'better-emacs-lisp)

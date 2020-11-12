@@ -1,4 +1,4 @@
-;; Example user config, copy to lesser-evil-user-config.el and modify to your needs.
+;; Example user config, copy to corgi-user-config.el and modify to your needs.
 
 ;; enable use of emacsclient
 (server-start)
@@ -21,5 +21,5 @@
 ;; Set which binding files to use, later files in the list take precedence over
 ;; earlier ones. File names are expanded based on user-emacs-directory (use
 ;; absolute file names if you don't want that)
-(setq eml/bindings-files (list "leader-bindings.el"
-                               "my-bindings.el"))
+(setq corkey/key-binding-files (list "corgi-bindings.el"
+                                     "my-bindings.el"))

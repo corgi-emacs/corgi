@@ -39,9 +39,9 @@
     ("r" "Recently opened files" counsel-recentf)
     ("A" "Find alternate file" find-alternate-file)
     ("e" "Emacs files"
-     ("i" "Open init.el" lesser-evil/open-init-el)
-     ("b" "Open bindings file" lesser-evil/open-bindings)
-     ("u" "Open user config" lesser-evil/open-user-config)))
+     ("i" "Open init.el" corgi/open-init-el)
+     ("b" "Open bindings file" corgi/open-bindings)
+     ("u" "Open user config" corgi/open-user-config)))
 
    ("s" "Search commands"
     ("s" "Search in buffer" swiper)
@@ -70,7 +70,7 @@
    ("w" "Windows"
     ("TAB" "Alternate window" alternate-window)
     ("1" "Delete other windows" delete-other-windows)
-    ("2" "Two column layout" lesser-evil/double-columns)
+    ("2" "Two column layout" corgi/double-columns)
     ("/" "Split window right" split-window-right)
     ("-" "Split window below" split-window-below)
     ("o" "Go to other window" other-window)
@@ -89,7 +89,7 @@
 
    ("SPC" "Execute command (M-x)" counsel-M-x)
    ("u" "Universal prefix" universal-argument)
-   ("TAB" "Switch to previous buffer" lesser-evil/switch-to-previous-buffer)
+   ("TAB" "Switch to previous buffer" corgi/switch-to-previous-buffer)
    ("1" "Select window 1" winum-select-window-1)
    ("2" "Select window 2" winum-select-window-2)
    ("3" "Select window 3" winum-select-window-3)
@@ -118,7 +118,8 @@
     ("s" "Toggle REPL" :repl/toggle)
     ("q" "Quit current REPL" :repl/quit)
     ("Q" "Quit all active REPLs" :repl/quit-all)
-    ("o" "Switch to Other REPL" :repl/other))
+    ("o" "Switch to Other REPL" :repl/other)
+    ("s" "Connect to REPL" :repl/connect))
 
    ("g" "Go places"
     ("g" "Go to definition" :jump/definition)
@@ -169,10 +170,10 @@
                      :jump/definition xref-find-definitions
                      :jump/back xref-pop-marker-stack
 
-                     :refactor/thread-first lesser-evil/elisp-thread-first-all
-                     :refactor/thread-last lesser-evil/elisp-thread-last-all))
+                     :refactor/thread-first corgi/elisp-thread-first-all
+                     :refactor/thread-last corgi/elisp-thread-last-all))
 
-  (inferior-emacs-lisp-mode ( :repl/toggle lesser-evil/switch-to-last-elisp-buffer))
+  (inferior-emacs-lisp-mode ( :repl/toggle corgi/switch-to-last-elisp-buffer))
 
   (clojure-mode (
                  :sexp/slurp-forward sp-forward-slurp-sexp
@@ -187,14 +188,15 @@
                  :eval/last-sexp-replace cider-eval-last-sexp-and-replace
                  :eval/buffer cider-eval-buffer
                  :eval/region cider-eval-region
-                 :eval/registry-pprint lesser-evil/cider-pprint-register
+                 :eval/registry-pprint corgi/cider-pprint-register
                  :eval/interrupt cider-interrupt
                  :eval/up-to-point cider-eval-sexp-up-to-point
 
                  :repl/toggle cider-switch-to-repl-buffer
                  :repl/quit cider-quit
-                 :repl/quit-all lesser-evil/cider-quit-all
+                 :repl/quit-all corgi/cider-quit-all
                  :repl/other cider-repl-switch-to-other
+                 :repl/connect cider-connect
 
                  :jump/definition cider-find-var
                  :jump/back cider-pop-back
@@ -216,7 +218,7 @@
                      :repl/quit cider-quit
                      :repl/other cider-repl-switch-to-other
 
-                     :eval/registry-pprint lesser-evil/cider-pprint-register
+                     :eval/registry-pprint corgi/cider-pprint-register
 
                      :jump/definition cider-find-var
                      :jump/back cider-pop-back

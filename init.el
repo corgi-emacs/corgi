@@ -2,13 +2,13 @@
 
 (require 'straight-init)
 (require 'better-defaults)
-(require 'lesser-evil-commands)
+(require 'corgi-commands)
 (require 'better-emacs-lisp)
 
-(setq straight-profiles '((lesser-evil . "lesser-evil.el")
-                          (lesser-evil-user . "lesser-evil-user.el")))
+(setq straight-profiles '((corgi . "corgi.el")
+                          (corgi-user . "corgi-user.el")))
 
-(setq straight-current-profile 'lesser-evil)
+(setq straight-current-profile 'corgi)
 
 (straight-use-package 'use-package)
 (setq straight-use-package-by-default t)
@@ -75,17 +75,27 @@
 (use-package evil-surround
   :config (global-evil-surround-mode 1))
 
-;; Enable copy-paste to/from x clipboard when running in a terminal
-(use-package xclip
-  :config (xclip-mode t))
-
 (use-package which-key
-  :after (evil-leader seq cl-lib)
   :diminish which-key-mode
   :config (which-key-mode 1))
 
 (use-package winum
   :config (winum-mode 1))
+
+(use-package corkey
+  :straight (corkey
+             :type git
+             :host github
+             :branch "main"
+             :files ("corkey/corkey.el")
+             :repo "lambdaisland/corgi-packages")
+  :config
+  (global-corkey-mode 1)
+  ;; Move to the front so these keys always have priority
+  (setq minor-mode-map-alist
+        (cons
+         (cons 'corkey-mode corkey/keymap)
+         (delq corkey-mode minor-mode-map-alist))))
 
 ;;; Lisp setup
 
@@ -99,14 +109,14 @@
         clojure-verify-major-mode nil)
 
   ;; TODO: get this upstream. #_ is not a logical sexp
-  (defun lesser-evil/clojure--looking-at-non-logical-sexp (command)
+  (defun corgi/clojure--looking-at-non-logical-sexp (command)
     "Return non-nil if text after point is \"non-logical\" sexp.
 \"Non-logical\" sexp are ^metadata and #reader.macros."
     (comment-normalize-vars)
     (comment-forward (point-max))
     (looking-at-p "\\(?:#?\\^\\)\\|#:?:?[[:alpha:]]\\|#_"))
 
-  (advice-add #'clojure--looking-at-non-logical-sexp :around #'lesser-evil/clojure--looking-at-non-logical-sexp))
+  (advice-add #'clojure--looking-at-non-logical-sexp :around #'corgi/clojure--looking-at-non-logical-sexp))
 
 (use-package cider
   :after (clojure-mode)
@@ -119,7 +129,7 @@
   ;; TODO: clean this up, submit to upstream where possible
 
   ;; New function, should go upstream. Kill all associated REPLs
-  (defun lesser-evil/cider-quit-all ()
+  (defun corgi/cider-quit-all ()
     "Quit all current CIDER REPLs."
     (interactive)
     (let ((repls (seq-remove (lambda (r)
@@ -135,7 +145,7 @@
   ;; return any REPL that is there. This is so that cider-quit can be called
   ;; repeatedly to close all REPLs in a process. It also means that , s s will go
   ;; to any REPL if there is one open.
-  (defun lesser-evil/around-cider-current-repl (command &optional type ensure)
+  (defun corgi/around-cider-current-repl (command &optional type ensure)
     (let ((repl (or
                  (if (not type)
                      (or (funcall command nil)
@@ -146,13 +156,13 @@
           (cider--no-repls-user-error type)
         repl)))
 
-  (advice-add #'cider-current-repl :around #'lesser-evil/around-cider-current-repl)
+  (advice-add #'cider-current-repl :around #'corgi/around-cider-current-repl)
 
   ;; This essentially redefines cider-repls. The main thing it does is return all
   ;; REPLs by using sesman-current-sessions (plural) instead of
   ;; sesman-current-session. It also falls back to the babashka repl if no repls
   ;; are connected/linked, so we can always eval.
-  (defun lesser-evil/around-cider-repls (command &optional type ensure)
+  (defun corgi/around-cider-repls (command &optional type ensure)
     (let ((type (cond
                  ((listp type)
                   (mapcar #'cider-maybe-intern type))
@@ -166,9 +176,9 @@
                       repls)
           (list (get-buffer "*babashka-repl*")))))
 
-  (advice-add #'cider-repls :around #'lesser-evil/around-cider-repls)
+  (advice-add #'cider-repls :around #'corgi/around-cider-repls)
 
-  (defun lesser-evil/cider-eval-last-sexp-and-replace ()
+  (defun corgi/cider-eval-last-sexp-and-replace ()
     "Alternative to cider-eval-last-sexp-and-replace, but kills
 clojure logical sexp instead of ELisp sexp, and pprints the
 result."
@@ -190,7 +200,7 @@ result."
                               nil
                               (cider--nrepl-print-request-map fill-column))))
 
-  (defun lesser-evil/cider-pprint-eval-last-sexp-insert ()
+  (defun corgi/cider-pprint-eval-last-sexp-insert ()
     (interactive)
     (let ((cider-comment-prefix "")
           (cider-comment-continued-prefix " ")
@@ -309,14 +319,6 @@ result."
 
 (use-package markdown-mode)
 
-(require 'evil-multi-leader)
-(global-multi-leader-mode 1)
-
-;; Move to the front so these keys always have priority
-(setq minor-mode-map-alist (cons
-                            (cons 'multi-leader-mode eml/map)
-                            (delq multi-leader-mode minor-mode-map-alist)))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Patches
 
@@ -340,8 +342,8 @@ result."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; User config
 
-(setq straight-current-profile 'lesser-evil-user)
+(setq straight-current-profile 'corgi-user)
 
-(let ((user-config (expand-file-name "lesser-evil-user-config.el" user-emacs-directory)))
+(let ((user-config (expand-file-name "corgi-user-config.el" user-emacs-directory)))
   (when (file-exists-p user-config)
     (load user-config)))

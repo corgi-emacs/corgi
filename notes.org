@@ -51,7 +51,7 @@ More far fetched ideas
 
 * Notes from kommen 2020-10-26
 
-https://github.com/kommen/lesser-evil/commits/main
+https://github.com/kommen/corgi/commits/main
 
 - evil-escape (fd)
 - magit / evil-magit -> fix TAB
