@@ -6,6 +6,7 @@
  ("clj-refactor.el" . "6db85b37b57497b56d97d5e5512160e5db85f798")
  ("clojure-mode" . "75c28897c7e91aa130c71c076aa2a6ce2e02da8f")
  ("company-mode" . "5f5949b6ae8ea9df94c6cb3e01d9cae43623b794")
+ ("corgi-packages" . "37bd7b1ff2c904e485a35ccd4132c78ed6c21d7e")
  ("counsel-projectile" . "06b03c1080d3ccc3fa9b9c41b1ccbcf13f058e4b")
  ("dash.el" . "b92ab5a39b987e4fe69317b9d9fda452300baf20")
  ("diminish.el" . "6ec6ebc391371418efc6c98d70b013f34af5a2ee")
@@ -48,8 +49,7 @@
  ("transient" . "990eb0a292d622b80b52460d445aa58232ef2645")
  ("treepy.el" . "3ac940e97f3d03e48ca9d7fcd74916a9b01c72f3")
  ("use-package" . "4fb1f9a68f1e7e7d614652afc017a6652fd029f1")
- ("walkclj" . "6ceb228bca51a36ca7cd59fec3509d3b671bf1a5")
+ ("walkclj" . "2077475eb3c8d1a170c3a3b0e836420469024f0f")
  ("with-editor" . "236c1586c3df5e0e53badf6ff6f997a6bfd31667")
- ("xclip" . "2951c6b62b29780c7a35c64601a59999b83aa145")
  ("yasnippet" . "5cbdbf0d2015540c59ed8ee0fcf4788effdf75b6"))
 :beta

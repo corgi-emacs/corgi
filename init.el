@@ -127,6 +127,8 @@
         nrepl-log-messages t)
 
   ;; TODO: clean this up, submit to upstream where possible
+  ;; More CIDER/clojure-mode stuff
+  ;; - logical-sexp doesn't treat #_ correctly
 
   ;; New function, should go upstream. Kill all associated REPLs
   (defun corgi/cider-quit-all ()
@@ -278,6 +280,7 @@ result."
   :straight (walkclj
              :type git
              :host github
+             :files ("walkclj.el")
              :repo "plexus/walkclj"))
 
 ;; Use the Clojure ns name as buffer name
