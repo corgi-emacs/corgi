@@ -5,6 +5,8 @@
 * Make more clojure `,` bindings work in the CIDER repl
 * require `seq`
 * Undo the evil-collection behavior of changing what `last-sexp` means
+* Remove `corgi-user-config.el` symlink, instead users should copy the example
+  and tweak from there
 
 ## Changed
 
@@ -15,6 +17,7 @@
   
 ## Added
 
+* Started keeping a CHANGELOG
 * Added `string-edit` package. No binding yet, use `string-edit-at-point`
 * Bindings `gc` for comment-region, `gC` for uncomment-region
 * Binding `,sl` for clear-repl
