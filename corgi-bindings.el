@@ -24,6 +24,9 @@
   ("<M-up>" "Expand region" er/expand-region)
   ("<M-down>" "Expand region" er/contract-region)
 
+  ("gc" "Comment region" comment-region)
+  ("gC" "Uncomment region" uncomment-region)
+
   ("SPC" "Global leader key"
    ("b" "Buffer commands"
     ("b" "Switch buffer" ivy-switch-buffer)
@@ -69,6 +72,7 @@
 
    ("w" "Windows"
     ("TAB" "Alternate window" alternate-window)
+    ("0" "Delete window" delete-window)
     ("1" "Delete other windows" delete-other-windows)
     ("2" "Two column layout" corgi/double-columns)
     ("/" "Split window right" split-window-right)
@@ -119,7 +123,8 @@
     ("q" "Quit current REPL" :repl/quit)
     ("Q" "Quit all active REPLs" :repl/quit-all)
     ("o" "Switch to Other REPL" :repl/other)
-    ("s" "Connect to REPL" :repl/connect))
+    ("c" "Connect to REPL" :repl/connect)
+    ("l" "Clear REPL" :repl/clear))
 
    ("g" "Go places"
     ("g" "Go to definition" :jump/definition)
@@ -134,6 +139,11 @@
     ("l" "Link least specific" sesman-link-with-least-specific)
     ("u" "Unlink" sesman-unlink))
 
+   ("j" "Jack-in"
+    ("j" "Jack in" :repl/jack-in)
+    ("o" "Jack in other" :repl/jack-in-other)
+    ("a" "Jack in all" :repl/jack-in-all))
+
    ("r" "Refactor"
     ("t" "Threading"
      ("f" "Thread first" :refactor/thread-first)
@@ -146,9 +156,6 @@
     ("e" "Extract..."
      ("f" "Extract function" :refactor/extract-function)))
 
-   ("'" "Jack in" :repl/jack-in)
-   ("\"" "Jack in Alternate" :repl/jack-in-alt)
-   ("&" "Jack in Combined" :repl/jack-in-combined)
    ("," "Eval from registry and pprint" :eval/registry-pprint)))
 
  ;; ","  'plexus-clojure-extras/cider-pprint-register
@@ -175,48 +182,54 @@
 
   (inferior-emacs-lisp-mode ( :repl/toggle corgi/switch-to-last-elisp-buffer))
 
-  (clojure-mode (
-                 :sexp/slurp-forward sp-forward-slurp-sexp
-                 :sexp/barf-forward sp-forward-barf-sexp
-                 :sexp/forward clojure-forward-logical-sexp
-                 :sexp/backward clojure-backward-logical-sexp
+  (clojure-mode ( :sexp/slurp-forward sp-forward-slurp-sexp
+                  :sexp/barf-forward sp-forward-barf-sexp
+                  :sexp/forward clojure-forward-logical-sexp
+                  :sexp/backward clojure-backward-logical-sexp
 
-                 :eval/last-sexp cider-eval-last-sexp
-                 :eval/last-sexp-pprint cider-pprint-eval-last-sexp
-                 :eval/last-sexp-pprint-comment cider-pprint-eval-last-sexp-to-comment
-                 :eval/ns-form cider-eval-ns-form
-                 :eval/last-sexp-replace cider-eval-last-sexp-and-replace
-                 :eval/buffer cider-eval-buffer
-                 :eval/region cider-eval-region
-                 :eval/registry-pprint corgi/cider-pprint-register
-                 :eval/interrupt cider-interrupt
-                 :eval/up-to-point cider-eval-sexp-up-to-point
+                  :eval/last-sexp cider-eval-last-sexp
+                  :eval/last-sexp-pprint cider-pprint-eval-last-sexp
+                  :eval/last-sexp-pprint-comment cider-pprint-eval-last-sexp-to-comment
+                  :eval/ns-form cider-eval-ns-form
+                  :eval/last-sexp-replace cider-eval-last-sexp-and-replace
+                  :eval/buffer cider-eval-buffer
+                  :eval/region cider-eval-region
+                  :eval/registry-pprint corgi/cider-pprint-register
+                  :eval/interrupt cider-interrupt
+                  :eval/up-to-point cider-eval-sexp-up-to-point
 
-                 :repl/toggle cider-switch-to-repl-buffer
-                 :repl/quit cider-quit
-                 :repl/quit-all corgi/cider-quit-all
-                 :repl/other cider-repl-switch-to-other
-                 :repl/connect cider-connect
+                  :repl/toggle cider-switch-to-repl-buffer
+                  :repl/quit cider-quit
+                  :repl/quit-all corgi/cider-quit-all
+                  :repl/other cider-repl-switch-to-other
+                  :repl/connect cider-connect
+                  :repl/jack-in ("Jack-in Clojure" cider-jack-in-clj)
+                  :repl/jack-in-other ("Jack in ClojureScript" cider-jack-in-clj)
+                  :repl/jack-in-all ("Jack in Clj+Cljs" cider-jack-in-clj&cljs)
+                  ;; TODO: this should clear the BUFFER, not just the last output
+                  :repl/clear cider-find-and-clear-repl-output
 
-                 :jump/definition cider-find-var
-                 :jump/back cider-pop-back
-                 :jump/ns cider-find-ns
+                  :jump/definition cider-find-var
+                  :jump/back cider-pop-back
+                  :jump/ns cider-find-ns
 
-                 :refactor/thread-first clojure-thread-first-all
-                 :refactor/thread-last clojure-thread-last-all
-                 :refactor/unwind-thread clojure-unwind-all
+                  :refactor/thread-first clojure-thread-first-all
+                  :refactor/thread-last clojure-thread-last-all
+                  :refactor/unwind-thread clojure-unwind-all
 
-                 :refactor/sort-namespace-declaration clojure-sort-ns
-                 :refactor/add-missing cljr-add-missing-libspec
-                 :refactor/extract-function cljr-extract-function
-
-                 :repl/jack-in ("Jack-in Clojure" cider-jack-in-clj)
-                 :repl/jack-in-alt ("Jack in ClojureScript" cider-jack-in-clj)
-                 :repl/jack-in-combined ("Jack in Clj+Cljs" cider-jack-in-clj&cljs)))
+                  :refactor/sort-namespace-declaration clojure-sort-ns
+                  :refactor/add-missing cljr-add-missing-libspec
+                  :refactor/extract-function cljr-extract-function))
 
   (cider-repl-mode ( :repl/toggle cider-switch-to-last-clojure-buffer
                      :repl/quit cider-quit
                      :repl/other cider-repl-switch-to-other
+                     :repl/quit-all corgi/cider-quit-all
+                     :repl/connect cider-connect
+                     :repl/jack-in ("Jack-in Clojure" cider-jack-in-clj)
+                     :repl/jack-in-other ("Jack in ClojureScript" cider-jack-in-clj)
+                     :repl/jack-in-all ("Jack in Clj+Cljs" cider-jack-in-clj&cljs)
+                     :repl/clear cider-repl-clear-buffer
 
                      :eval/registry-pprint corgi/cider-pprint-register
 

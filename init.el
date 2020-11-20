@@ -1,9 +1,12 @@
 (add-to-list #'load-path (expand-file-name "init.d" user-emacs-directory))
 
+(require 'seq)
+
 (require 'straight-init)
 (require 'better-defaults)
 (require 'corgi-commands)
 (require 'better-emacs-lisp)
+
 
 (setq straight-profiles '((corgi . "corgi.el")
                           (corgi-user . "corgi-user.el")))
@@ -70,7 +73,14 @@
 (use-package evil-collection
   :after (evil)
   :config
-  (evil-collection-init))
+  (evil-collection-init)
+  ;; Stop changing how last-sexp works. Even though we have evil-move-beyond-eol
+  ;; set, this is still being added, and I can't figure out why. Resorting to
+  ;; this hack.
+  (cl-loop
+   for fun
+   in '(elisp--preceding-sexp cider-last-sexp pp-last-sexp)
+   do (advice-mapc (lambda (advice _props) (advice-remove fun advice)) fun)))
 
 (use-package evil-surround
   :config (global-evil-surround-mode 1))
@@ -260,7 +270,9 @@ result."
   :hook (prog-mode . company-mode))
 
 (use-package projectile
-  :config (projectile-global-mode))
+  :config
+  (projectile-global-mode)
+  (setq projectile-create-missing-test-files t))
 
 (use-package counsel-projectile
   :after (projectile))
@@ -321,6 +333,8 @@ result."
 (use-package org)
 
 (use-package markdown-mode)
+
+(use-package string-edit)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Patches
