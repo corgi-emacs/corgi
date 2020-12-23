@@ -9,7 +9,7 @@
   (unless (executable-find xclip-program)
     (xclip-mode t)))
 
-(set-frame-font "Iosevka Fixed SS14-19")
+(set-frame-font "Iosevka Fixed SS14-22")
 
 (global-linum-mode 1)
 
@@ -172,6 +172,7 @@
   (insert ";; This is a scratch buffer for temporary code and trying things out.
 ;; You can evaluate Clojure code here with , e e
 ")
+  (clojure-mode)
   (goto-char (point-max))
   (dolist (window (get-buffer-window-list "*scratch*"))
     (set-window-point window (point-max))))
@@ -179,3 +180,24 @@
 (babashka-jack-in
  (lambda (_)
    (sesman-link-session 'CIDER '("babashka") 'buffer (get-buffer "*scratch*"))))
+
+;; (use-package adaptive-wrap
+;;   :config
+;;   (when (fboundp 'adaptive-wrap-prefix-mode)
+;;     (defun my-activate-adaptive-wrap-prefix-mode ()
+;;       "Toggle `visual-line-mode' and `adaptive-wrap-prefix-mode' simultaneously."
+;;       (adaptive-wrap-prefix-mode (if visual-line-mode 1 -1)))
+;;     (add-hook 'visual-line-mode-hook 'my-activate-adaptive-wrap-prefix-mode))
+;;   (global-visual-line-mode t))
+
+(use-package sql-presto
+  :config
+  (setq sql-presto-program "/home/arne/Eleven/runeleven/presto/bin/presto_cli.sh")
+  (setq sql-presto-options '("--" "--output-format" "CSV_HEADER")))
+
+(use-package color-theme-sanityinc-tomorrow
+  :config
+  (load-theme 'sanityinc-tomorrow-blue t))
+;;(color-theme-sanityinc-tomorrow-night)
+
+(use-package keycast)

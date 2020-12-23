@@ -12,6 +12,10 @@ Stuff left to do
 - add support for a user config file, so more personal tweaks like the font and
   theme can be split out
 
+CIDER stuff
+- eval insert pretty print should insert at point
+
+
 Issues
 - company mode behaves differently than in spacemacs, making the autocompletion
   a lot less pleasant to work with. Figure out how to fix that

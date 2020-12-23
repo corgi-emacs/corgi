@@ -238,4 +238,7 @@
                      :jump/ns cider-find-ns))
 
   (c-mode ( :jump/definition xref-find-definitions
-            :jump/back xref-pop-marker-stack))))
+            :jump/back xref-pop-marker-stack))
+  (sql-mode ( :eval/last-sexp sql-send-paragraph
+              :eval/buffer sql-send-buffer
+              :eval/region sql-send-region))))

@@ -87,7 +87,8 @@
 
 (use-package which-key
   :diminish which-key-mode
-  :config (which-key-mode 1))
+  :config
+  (which-key-mode 1))
 
 (use-package winum
   :config (winum-mode 1))
@@ -330,9 +331,14 @@ result."
 
 (use-package expand-region)
 
-(use-package org)
+(use-package org
+  :config
+  ;; Make templates like <s work
+  (require 'org-tempo))
 
 (use-package markdown-mode)
+
+(use-package yaml-mode)
 
 (use-package string-edit)
 
@@ -360,6 +366,8 @@ result."
 ;; User config
 
 (setq straight-current-profile 'corgi-user)
+
+(custom-set-variables)
 
 (let ((user-config (expand-file-name "corgi-user-config.el" user-emacs-directory)))
   (when (file-exists-p user-config)
