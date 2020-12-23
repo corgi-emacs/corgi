@@ -1,0 +1,124 @@
+#+TITLE:     Corgi User Manual
+#+AUTHOR:    Arne Brasseur
+#+EMAIL:     arne@lambdaisland.com
+#+LANGUAGE:  en
+
+* Principles
+
+** Minimal
+
+Minimal is relative, one person's essential is an other person's bloat. What do
+we mean for Corgi to be minimal?
+
+First off we limit the amount of packages that Corgi pulls in, even though some
+of the packages we do pull in are fairly large. Beyond that we limit the amount
+of customization we do beyond what these packages provide.
+
+Combined this brings several benefits. It keeps Emacs running smoothly. It
+limits the number of moving parts, so there is less that can go wrong. And it
+makes it possible for people to keep an overview of what is it they are
+installing.
+
+** Reproducible installs
+
+The modern Emacs ecosystem has gone far beyond what it is was originally
+intended for. People are doing increasingly impressive and complex things on top
+of this humble LISP runtime, with packages recursively depending on dozens if
+not hundreds of other packages.
+
+Sadly our practices have not kept up with this reality. Two people can install
+the same Emacs config minutes apart, but still get different versions of
+packages, so no one is actually running the same code as anyone else. You are
+almost certainly getting a combination of package versions that was never tested
+before. Predictably this leads to breakage.
+
+This is partly technical and partly cultural, it seems the diligence to not
+introduce breaking API changes is not pervasive yet, and frankly the language
+and package system provide little affordances to limit the blast radius.
+
+[[https://github.com/raxod502/straight.el][straight.el]] seeks to rectify this by providing reproducible installs. All
+packages are installed via Git, using specific commit hashes, which are "frozen"
+in a version file. When first using Corgi it will install its own version file,
+so you get the exact same code that Corgi was developed and tested with.
+
+** Packages all the way down
+
+When installing Corgi we don't give you a huge ~.emacs.d~ directory to copy,
+instead you create your own, and simply pull in the ~corgi~ package. Beyond that
+it's a standard Emacs config, and it's *your config*. Add customizations to
+~.emacs.d/init.el~ to your heart's content.
+
+Corgi itself is a collection of packages like ~corgi-editor~, ~corgi-defaults~,
+or ~corgi-emacs~, and most of what these do is pulling in and configuring other
+packages. If you don't like what any of them is doing, then copy the relevant
+package over to your personal config and customize it from there.
+
+** Vim-style modal editing
+
+There are two schools of thought for how to do editor key bindings, /modal/ and
+/key-chord/. Emacs traditionally is a key-chord style editor, you combine keys
+with one or more modifiers in elaborate "chords". The vi/vim family of editors
+instead uses different editor "modes", like "normal mode", "insert mode", or
+"visual mode". What each key does depends on the current mode, in insert mode
+pressing `D` will insert the letter "D", but in normal mode it will delete up to
+the end of the line. 
+
+Not all commands can be bound to a single key like that, others are bound to key
+sequences. `gg` goes to the beginning of the buffer. `,ep` evaluates and
+expression and pretty prints the result.
+
+(Note that Emacs has a separate, unrelated concept of
+modes. To differentiate them these vim-style modes are also referred to as
+states.)
+
+There are two reasons why we have made a strong decision to promote the modal
+style: RSI, and command composition.
+
+RSI or /repetitive strain injury/, also known as a "mouse arm" or "emacs pinky"
+is an inflammation of the neural pathways in the arm and wrist. It's a painful
+affliction that many programmers suffer from, and recovering can be a long and
+frustrating process, sometimes forcing people to put their programming career on
+hold for extended periods of time.
+
+The Emacs key chords can be a contributing factor to RSI. It is telling that a
+common form of RSI among Emacs users shows up in the left pinky, used to press
+Ctrl over and over. It seems in contrast that pressing single keys in sequence,
+so the hands do less moving around and less stretching out, is easier on the
+body.
+
+This alone should be a fairly compelling argument, but modal editing isn't only
+good for your health, it will also make you a more productive programmer. See,
+these single keypress commands don't just exist in isolation, they can be
+combined into "sentences" to very concisely express complex operations.
+
+#+begin_src 
+<number><command><text object or motion>
+#+end_src
+
+In normal mode `w` moves forward by one word. `3w` moves forward by 3 words.
+`dw` deletes the next word. `3dw` deletes the next 3 words. Combining these
+commands and text objects allows you to do in two or three key strokes what
+might be a lot of bouncing the cursor around and pressing several key chords
+otherwise.
+
+Some more examples:
+
+- `2yL` copy ("yank") the next 2 s-expressions
+- `c$` "change" from cursor position to the end of the line, this deletes the
+  relevant section and changes to insert mode
+- `cs(]` change surrounding parenthesis to brackets
+- `di"` delete inner string, i.e. delete everything inside the surrounding
+  double quotes
+
+** Keybindings all live in one place
+** First class terminal and GUI support
+
+* Differences from Vim
+
+Generally we don't override Evil's keybindings, and Evil in turns emulates vim
+closely. Some differences
+
+- `L` and `H` move forward/backward by one s-expression, instead of moving to
+  the beginning/end of the buffer
+- `SPC` and `,` are both used as leader/prefix keys. Press either and wait a bit
+  to see what they can do.

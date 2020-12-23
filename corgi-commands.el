@@ -39,8 +39,4 @@ Repeated invocations toggle between the two most recently open buffers."
   (interactive)
   (find-file (expand-file-name "corgi-bindings.el" user-emacs-directory)))
 
-(defun corgi/open-user-config ()
-  (interactive)
-  (find-file (expand-file-name "corgi-user-config.el" user-emacs-directory)))
-
 (provide 'corgi-commands)

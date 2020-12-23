@@ -22,6 +22,8 @@
   ;; ("(" "Backward up sexp" evil-cp-backward-up-sexp)
   ;; (")" "Up sexp" evil-cp-up-sexp)
 
+  ;; This is problematic, org-mode uses these to reorder headings.
+  ;; This really only belongs in visual-mode.
   ("<M-up>" "Expand region" er/expand-region)
   ("<M-down>" "Expand region" er/contract-region)
 
@@ -44,8 +46,7 @@
     ("A" "Find alternate file" find-alternate-file)
     ("e" "Emacs files"
      ("i" "Open init.el" corgi/open-init-el)
-     ("b" "Open bindings file" corgi/open-bindings)
-     ("u" "Open user config" corgi/open-user-config)))
+     ("b" "Open bindings file" corgi/open-bindings)))
 
    ("s" "Search commands"
     ("s" "Search in buffer" swiper)
@@ -90,7 +91,6 @@
    ("t" "Toggle modes"
     ("a" "Toggle aggressive indent mode" aggressive-indent-mode)
     ("l" "Toggle line numbers" linum-mode))
-
 
    ("SPC" "Execute command (M-x)" counsel-M-x)
    ("u" "Universal prefix" universal-argument)

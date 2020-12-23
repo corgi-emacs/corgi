@@ -1,4 +1,4 @@
-;;; corgi.el ---
+;;; corgi.el --- Emacs config based on Straight, Evil, and CIDER
 ;;
 ;; Filename: corgi.el
 ;; Description:
@@ -41,20 +41,6 @@
 ;;; Code:
 
 
-;;;; Straight profile ;;;;
-
-;; We want all packages that are part of corgi to be part of a separate "corgi" profile,
-;; with its own version file, which we copy over the first time, so users get the exact
-;; versions that Corgi has been tested with.
-
-(add-to-list #'straight-profiles '(corgi . "corgi.el"))         ; tell straight about the new profile
-(setq corgi-straight-original-profile straight-current-profile) ; stash the current profile, we restore it at the bottom
-(setq straight-current-profile 'corgi)                          ; Set the corgi profile to active
-
-(require 'seq)
-(require 'cl-lib)
-
-(require 'corgi-better-defaults)
 (require 'corgi-commands)
 (require 'corgi-better-emacs-lisp)
 
@@ -113,7 +99,7 @@
 (use-package evil-collection
   :after (evil)
   :config
-  ;;(evil-collection-init)
+  (evil-collection-init)
   ;; Stop changing how last-sexp works. Even though we have evil-move-beyond-eol
   ;; set, this is still being added, and I can't figure out why. Resorting to
   ;; this hack.
@@ -378,8 +364,6 @@ result."
       (make-directory parent-directory t))))
 
 (add-to-list 'find-file-not-found-functions 'magnars/create-non-existent-directory)
-
-(setq straight-current-profile corgi-straight-original-profile)
 
 (provide 'corgi)
 

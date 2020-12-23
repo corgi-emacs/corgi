@@ -64,3 +64,7 @@ https://github.com/kommen/corgi/commits/main
 - navigating auto complete buffers down with CTRL-j
 - SPC j i for navigating to functions within a buffer (helm-jump-in-buffer)
 - SPC g l l to open a browser to github for the line the cursor is on (git-link)
+
+* Stuff to figure out / test
+
+- Updating corgi / individual corgi packages / overriding package versions
