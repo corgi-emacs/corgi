@@ -132,4 +132,4 @@
 ;; Stop asking about following symlinks to version controlled files
 (setq vc-follow-symlinks t)
 
-(provide 'better-defaults)
+(provide 'corgi-better-defaults)

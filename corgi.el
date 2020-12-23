@@ -1,23 +1,63 @@
-(add-to-list #'load-path (expand-file-name "init.d" user-emacs-directory))
+;;; corgi.el ---
+;;
+;; Filename: corgi.el
+;; Description:
+;; Author: Arne Brasseur <arne@lambdaisland.com>
+;; Version: 0.1.0
+;; Package-Requires:
+;; URL: https://github.com/lambdaisland/corgi
+;; Doc URL:
+;; Keywords:
+;; Compatibility:
+;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;;; Commentary:
+;;
+;;
+;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;;; Change Log:
+;;
+;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;; This program is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or (at
+;; your option) any later version.
+;;
+;; This program is distributed in the hope that it will be useful, but
+;; WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+;; General Public License for more details.
+;;
+;; You should have received a copy of the GNU General Public License
+;; along with GNU Emacs.  If not, see <https://www.gnu.org/licenses/>.
+;;
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;
+;;; Code:
+
+
+;;;; Straight profile ;;;;
+
+;; We want all packages that are part of corgi to be part of a separate "corgi" profile,
+;; with its own version file, which we copy over the first time, so users get the exact
+;; versions that Corgi has been tested with.
+
+(add-to-list #'straight-profiles '(corgi . "corgi.el"))         ; tell straight about the new profile
+(setq corgi-straight-original-profile straight-current-profile) ; stash the current profile, we restore it at the bottom
+(setq straight-current-profile 'corgi)                          ; Set the corgi profile to active
 
 (require 'seq)
+(require 'cl-lib)
 
-(require 'straight-init)
-(require 'better-defaults)
+(require 'corgi-better-defaults)
 (require 'corgi-commands)
-(require 'better-emacs-lisp)
+(require 'corgi-better-emacs-lisp)
 
-
-(setq straight-profiles '((corgi . "corgi.el")
-                          (corgi-user . "corgi-user.el")))
-
-(setq straight-current-profile 'corgi)
-
-(straight-use-package 'use-package)
-(setq straight-use-package-by-default t)
-
-(use-package seq)
-(use-package cl-lib)
 (use-package a)
 
 (use-package diminish
@@ -73,7 +113,7 @@
 (use-package evil-collection
   :after (evil)
   :config
-  (evil-collection-init)
+  ;;(evil-collection-init)
   ;; Stop changing how last-sexp works. Even though we have evil-move-beyond-eol
   ;; set, this is still being added, and I can't figure out why. Resorting to
   ;; this hack.
@@ -94,19 +134,14 @@
   :config (winum-mode 1))
 
 (use-package corkey
-  :straight (corkey
-             :type git
-             :host github
-             :branch "main"
-             :files ("corkey/corkey.el")
-             :repo "lambdaisland/corgi-packages")
   :config
   (global-corkey-mode 1)
   ;; Move to the front so these keys always have priority
   (setq minor-mode-map-alist
         (cons
          (cons 'corkey-mode corkey/keymap)
-         (delq corkey-mode minor-mode-map-alist))))
+         (delq corkey-mode minor-mode-map-alist)))
+  (add-to-list #'corkey/key-binding-files (expand-file-name "corgi-bindings.el" (file-name-directory (or load-file-name buffer-file-name)))))
 
 ;;; Lisp setup
 
@@ -282,31 +317,13 @@ result."
   :config
   :hook ((emacs-lisp-mode ielm-mode) . turn-on-elisp-slime-nav-mode))
 
-(use-package pprint-to-buffer
-  :straight (pprint-to-buffer
-             :type git
-             :host github
-             :files ("pprint-to-buffer/pprint-to-buffer.el")
-             :repo "plexus/plexmacs"))
-
-(use-package walkclj
-  :straight (walkclj
-             :type git
-             :host github
-             :files ("walkclj.el")
-             :repo "plexus/walkclj"))
+(use-package pprint-to-buffer)
 
 ;; Use the Clojure ns name as buffer name
 (use-package clj-ns-name
-  :after (walkclj)
-  :straight (clj-ns-name
-             :type git
-             :host github
-             :files ("clj-ns-name/clj-ns-name.el")
-             :repo "plexus/plexmacs")
   :config
   (clj-ns-name-install)
-  ;; Apply ns-name-as-buffer-name when jumping to definition
+  ;; Apply ns-name-as-buffer-name when jumping to defcorgiion
   (advice-add #'cider-find-file
               :around
               (lambda (cider-find-file-fn url)
@@ -362,13 +379,9 @@ result."
 
 (add-to-list 'find-file-not-found-functions 'magnars/create-non-existent-directory)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; User config
+(setq straight-current-profile corgi-straight-original-profile)
 
-(setq straight-current-profile 'corgi-user)
+(provide 'corgi)
 
-(custom-set-variables)
-
-(let ((user-config (expand-file-name "corgi-user-config.el" user-emacs-directory)))
-  (when (file-exists-p user-config)
-    (load user-config)))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;; corgi.el ends here

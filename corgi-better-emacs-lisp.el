@@ -65,4 +65,4 @@
   (corgi/elisp--thread-all "thread-last " but-last))
 
 
-(provide 'better-emacs-lisp)
+(provide 'corgi-better-emacs-lisp)

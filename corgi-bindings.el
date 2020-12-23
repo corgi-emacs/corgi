@@ -1,3 +1,4 @@
+;;; -*- no-byte-compile: t -*-
 (:bindings
  (("TAB" "Indent" :format/tab-indent)
   (">" "Slurp" :sexp/slurp-forward)
