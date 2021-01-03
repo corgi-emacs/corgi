@@ -113,6 +113,139 @@ Some more examples:
 ** Keybindings all live in one place
 ** First class terminal and GUI support
 
+* Installation
+** Installing Emacs
+
+/TODO: These instructions were written a few years ago, check if they are still accurate./
+
+How to install Emacs depends on your operating system. Make sure you install
+"GNU Emacs", and not an alternative version like "XEmacs" or "Aquamacs".
+
+*** Windows
+
+Windows versions of GNU Emacs are distributed as zip-files, which can be found
+on [[http://ftpmirror.gnu.org/emacs/windows/][gnu.org ftp mirrors]]. Find the zip file with the highest version number, at
+time of writing this is ~emacs-24.5-bin-i686-mingw32.zip~, and download it.
+
+Create a directory where you want to put Emacs, for example ~C:\Program
+Files\Emacs~ and unpack the zip file there.
+
+The ~runemacs.exe~ program in the ~bin~ directory will start Emacs. The
+~addpm.exe~ program will add Emacs to the start menu.
+
+*** OS X
+
+OS X already comes with a version of Emacs installed, but it's very old (Emacs
+22), and it doesn't have GUI support, so it only works inside a terminal. You
+want to avoid using this version.
+
+If you have Homebrew available then that is the most straightforward option.
+
+#+BEGIN_SRC sh
+$ brew update
+$ brew install emacs --with-cocoa
+$ brew linkapps emacs
+#+END_SRC
+
+Alternatively you can download a ~.dmg~ at [[https://emacsformacosx.com/][emacsformacosx.com]].
+
+That should be enough to get you going. Emacs Redux has some more tips on
+[[http://emacsredux.com/blog/2015/05/09/emacs-on-os-x/][setting up Emacs on OS X]].
+
+*** Linux
+
+Your package manager should have ready-made packages available. If you have a
+graphical package manager look for an "emacs" package, or install the package
+from the command line with ~apt-get~ or ~yum~.
+
+** Configuring Emacs: straight.el, use-package, corgi-packages
+
+Corgi differs from other Emacs configurations like Spacemacs, Doom, or Prelude
+in that it's not an Emacs configuration at all, instead it is a collection of
+packages that are meant as a foundation for building your own config.
+
+These packages are distributed via Git, and can be installed with the
+straight.el functional package manager, so you will not find them on MELPA or
+similar repositories. These Corgi packages take care of various bits of Emacs
+boilerplate, as well as installing and configuring a set of base packages for
+you, so you get a system that is pleasant to use out of the box. To configure
+these third-party packages Corgi uses ~use-package~.
+
+This means that a corgi-based Emacs config consists of four parts
+
+- Install straight.el
+- Install use-package
+- Install corgi packages
+- Do your own setup
+
+Here's a basic config to get you started:
+
+#+begin_src emacs-lisp
+;; ~/.emacs or ~/.emacs.d/init.el
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Install straight.el
+
+(defvar bootstrap-version)
+
+(let ((install-url "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el")
+      (bootstrap-file (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 5))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer (url-retrieve-synchronously install-url 'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+  
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Install and enable use-package
+
+(straight-use-package 'use-package)
+
+(setq straight-use-package-by-default t)
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Install Corgi
+
+(use-package corgi-packages
+  :straight (corgi-packages
+             :type git
+             :host github
+             :repo "lambdaisland/corgi-packages"))
+
+(add-to-list #'straight-recipe-repositories 'corgi-packages)
+
+(let ((straight-current-profile 'corgi))
+  (use-package corgi-defaults)
+  (use-package corgi-editor)
+  (use-package corgi-emacs-lisp)
+  (use-package corgi-commands)
+  (use-package corgi-clojure)
+  (use-package corgi-stateline)
+  (use-package corkey
+    :config
+    (corkey-mode 1)
+    (corkey/install-bindings)))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; Your own stuff goes here, we recommend these extra packages
+
+(use-package markdown)
+(use-package yaml)
+(use-package org)
+(use-package magit)
+#+end_src
+
+* Packages
+** corgi-defaults
+
+** corgi-editor
+** corgi-emacs-lisp
+** corgi-commands
+** corgi-clojure
+** corgi-stateline
+** corkey
+
 * Differences from Vim
 
 Generally we don't override Evil's keybindings, and Evil in turns emulates vim

@@ -68,3 +68,15 @@ https://github.com/kommen/corgi/commits/main
 * Stuff to figure out / test
 
 - Updating corgi / individual corgi packages / overriding package versions
+https://github.com/CyberShadow/term-keys
+
+- Look into terminal key bindings
+
+https://emacs.stackexchange.com/a/13957/18276
+
+view-lossage to test
+
+iTerm(2)
+gnome-terminal / konsole
+cmd.exe ?  
+https://github.com/CyberShadow/term-keys
