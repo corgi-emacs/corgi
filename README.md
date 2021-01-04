@@ -8,6 +8,10 @@ Corgi.**
 
 We've started on a [User Manual](corgi_manual.org), please start there.
 
+## Where did the code go?
+
+Check out [corgi-packages](https://github.com/lambdaisland/corgi-packages)
+
 ## Motivation
 
 While I love Spacemacs I find the sheer size of it can become an issue. It
