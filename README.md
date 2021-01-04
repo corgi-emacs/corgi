@@ -1,30 +1,14 @@
 # Corgi
 
-A minimalistic evil-based Emacs configuration that feels like a slimmed down version of Spacemacs.
+A minimalistic evil-based Emacs configuration that feels like a slimmed down
+version of Spacemacs.
 
-**This is a personal setup and a work in progress. Things will still change, some things will seem highly opinionated, some things will still break. Use at your own risk. The plan is to eventually evolve this into a @lambdaisland endorsed Clojure-focused evil-based Emacs config, but until we get there this is not intended for general consumption.**
+**This is a work in progress, please get in touch if you want to help beta-test
+Corgi.**
 
-**Initial write-up of the first version is below, but is already outdated.**
+We've started on a [User Manual](corgi_manual.org), please start there.
 
-----
-
-What's in the box so far?
-
-- evil
-- evil-collection
-- evil-leader
-- ivy
-- counsel
-- swiper
-- xclip
-- which-key
-- winum
-- undo-fu
-- clojure/cider/clj-refactor
-- aggressive-indent
-- company
-- projectile
-- magit
+## Motivation
 
 While I love Spacemacs I find the sheer size of it can become an issue. It
 contains much functionality and many customizations that I don't need, and I
@@ -41,58 +25,36 @@ tmux](https://lambdaisland.com/blog/2019-12-12-advent-of-parens-12-pairing-cloud
 The limited set of dependencies should make this config quick to set up, and
 snappy in use.
 
-Keybindings based on a `SPC` leader key are installed based on
-`leader_bindings.el`. This provides a declarative single source of truth for all
-Spacemacs-like bindings.
+Corgi comes with its own keybinding package, `corkey`, which sets up bindings
+based on one or more keybinding files. To customize, either add keybinding files
+into your config which get layered over the built-in ones, or copy the corgi
+bindings file into your config and customize it.
 
-``` emacs-lisp
-(("b" "Buffer commands"
-  ("b" "Switch buffer" ivy-switch-buffer)
-  ("d" "Kill buffer" kill-buffer))
+Corkey uses an extra layer of indirection called signals, this makes it easy to
+have consistent key bindings across major-modes. E.g. Corgi provides the same
+shortcuts for evaluating code, no matter in which language.
 
- ("f" "File commands"
-  ("f" "Find file" counsel-find-file)
-  ("s" "Save file" save-buffer)
-  ("S" "Save all" evil-write-all))
-
- ("s" "Search commands"
-  ("s" "Search in buffer" swiper))
-
- ("h" "Help"
-  ("d" "Describe"
-   ("k" "Describe key" describe-key)
-   ("v" "Describe variable" counsel-describe-variable)
-   ("f" "Describe function" counsel-descbinds-function)))
-
- ("w" "Windows"
-  ("1" "Delete other windows" delete-other-windows)
-  ("/" "Split window right" split-window-right)
-  ("-" "Split window below" split-window-below)
-  ("o" "Go to other window" other-window)
-  ("d" "Delete window" delete-window))
-
- ("SPC" "Execute command (M-x)" counsel-M-x)
- ("1" "Select window 1" winum-select-window-1)
- ("2" "Select window 2" winum-select-window-2)
- ("2" "Select window 2" winum-select-window-2)
- ("4" "Select window 4" winum-select-window-4)
- ("5" "Select window 5" winum-select-window-5)
- ("6" "Select window 6" winum-select-window-6)
- ("7" "Select window 7" winum-select-window-7)
- ("8" "Select window 8" winum-select-window-8)
- ("9" "Select window 9" winum-select-window-9)
- ("0" "Select window 10" winum-select-window-10))
-```
+It also makes it easier to provide alternative binding sets, while honoring
+people's preferences. E.g. a binding set can have `Ctrl-F` for `:search/buffer`,
+which may invoke `swiper` or `isearch` or something else, based on the user's
+preferences.
 
 ## Principles
 
 **Everything is a package**
 
-Custom functions and modifications should become their
-own package, or be submitted upstream, so that the config itself is just loading
-packages and tying them together.
+Corgi itself is just a collection of packages, and most of what Corgi does is
+pull in a selection of packages.
 
--> still a few things in here that need to go into packages.
+Custom functions and modifications go into their own dedicated package, so they
+are available for use by the community at large, or they are submitted upstream,
+so that the config itself is just loading packages and tying them together.
+
+**It's your config**
+
+We don't take over `init.el`, at the end of the day you decide how your config
+works. You decide which Corgi packages to pull in, and if you don't like some of
+our choices, you can simply copy over the relevant code and tweak it from there.
 
 **When in doubt, do less**
 
@@ -130,12 +92,11 @@ issues because of slightly different package versions.
 **Somewhat opinionated**
 
 This config makes a few clear, non-negotiable decisions. It's evil based, has
-structural editing, includes org-mode, etc. But on some things it does not have
-an opinion. The theme, font, desktop-mode, linum-mode, mode-line are all things
-you can configure in your own `corgi-user-config.el`.
+structural editing, etc. But on some things it does not have
+an opinion. 
 
 ## License
 
 GPL version 3
 
-Copyright &copy; Arne Brasseur 2020
+Copyright &copy; Arne Brasseur 2020-2021
