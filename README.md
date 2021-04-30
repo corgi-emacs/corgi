@@ -8,6 +8,18 @@ Corgi.**
 
 We've started on a [User Manual](corgi_manual.org), please start there.
 
+## Status
+
+Corgi is pre-alpha. I use it, working around some known issues. It has not been 
+officially announced yet, and we do not guarantee that it works.
+
+We are interested in finding collaborators and contributors in order to get Corgi
+in a shippable state. If you are interested in helping out with that then get in 
+touch, and we can add you to the Lambda Island Discord server, to discuss how to
+proceed.
+
+We will not respond to Github issues asking for support at this time.
+
 ## Where did the code go?
 
 Check out [corgi-packages](https://github.com/lambdaisland/corgi-packages)
