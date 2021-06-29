@@ -230,8 +230,8 @@ Here's a basic config to get you started:
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; Your own stuff goes here, we recommend these extra packages
 
-(use-package markdown)
-(use-package yaml)
+(use-package markdown-mode)
+(use-package yaml-mode)
 (use-package org)
 (use-package magit)
 #+end_src
