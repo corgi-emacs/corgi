@@ -297,22 +297,22 @@ in a Clojure buffer ~, j j~ will "Jack-in" a REPL.
 *** Window ~SPC w~
 
 - ~SPC [0...9]~ - go to window number [0..9]
-- ~SPC w /~ - split window vertically
-- ~SPC w -~ - split window horizontally
-- ~SPC w d~ - delete window
+- ~SPC w /~- split window vertically
+- ~SPC w -~- split window horizontally
+- ~SPC w d~- delete window
 - ~SPC w 1~- extend current window to whole screen
 
 *** buffers ~SPC b~
 
-- ~SPC b b~ - list of all buffers
-- ~SPC b d~ - kill current buffer (not delete)
+- ~SPC b b~- list of all buffers
+- ~SPC b d~- kill current buffer (not delete)
 
 *** file ~SPC f~
 
 - ~SPC f s~ - save a file
-- ~SPC p p~ - open a project
-- ~SPC f f~ - find a file
-- ~SPC p f~ - find a file in current project
+- ~SPC p p~- open a project
+- ~SPC f f~- find a file
+- ~SPC p f~- find a file in current project
 
 *** Getting help ~SPC h~
 
