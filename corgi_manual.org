@@ -236,9 +236,119 @@ Here's a basic config to get you started:
 (use-package magit)
 #+end_src
 
+* Key bindings
+
+Corgi's key system is provided by one of a Corgi package called
+[Corkey](https://github.com/lambdaisland/corgi-packages/tree/main/corkey). It
+contains the key binding functionality based on simple configuration files, as
+well as Corgi's default bindings.
+
+You can find all binding definitions in [[https://github.com/lambdaisland/corgi-packages/blob/main/corkey/corgi-keys.el][corgi-keys.el]] and [[https://github.com/lambdaisland/corgi-packages/blob/main/corkey/corgi-signals.el][corgi-signals.el]]. The
+~keys~ file contains the actual bindings as a nested datastructure, bound to
+symbolic ~signals~ (keywords). E.g.
+
+#+begin_src emacs-lisp
+  (("SPC" "Global leader key"
+    ("f" "File commands"
+     ("f" "Find file" :file/open))))
+#+end_src
+
+The ~signals~ file provides the mapping from this keyword to an actual Emacs
+command, based on the current major mode or minor modes.
+
+#+begin_src emacs-lisp
+  ((corkey-local-mode (:file/open counsel-find-file)))
+#+end_src
+
+This indirection serves two purposes. It allows you to change the command you
+want to use for a certain action like opening a file, indepently of its
+keybinding. So you can configure the command you want to use, and have it work
+consistently even when switching between different sets of bindings.
+
+The other purpose is to provide mnemonic bindings that work in a mode-specific
+way. E.g. `SPC s s` invokes the signal `:repl/toggle`. In Clojure mode this will
+be bound to `cider-switch-to-repl-buffer`, whereas in Emacs LISP mode it will
+call `ielm`, and in SQL mode it does a `sql-show-sqli-buffer`. Each brings you
+to the REPL associated with the file you are working on.
+
+If you decide you don't like `SPC s s` for this functionality then you can
+rebind that, and it will work accordingly in all these modes.
+
+** Keys to get you started 
+
+Corgi relies on ~evil-mode~, which Emulates Vim. For basic editing (insert,
+delete, copy, paste, etc.) we recommend going through a Vim tutorial.
+
+For other commands like opening files or jumping around windows (panes/splits)
+we follow the conventions set out by Spacemacs, where all commands start with
+hitting the space bar (~SPC~), typically followed by a prefix key denoting a
+category (e.g. ~f~ for "file") and a final key for the specific command. So e.g.
+~SPC f f~ to open a file.
+
+Press ~SPC~ or ~SPC f~ and wait a moment to get a list of options.
+
+Besides this ~SPC~ "leader key" we also use ~,~ for mode-specific commands, e.g.
+in a Clojure buffer ~, j j~ will "Jack-in" a REPL.
+
+*** General
+
+~SPC SPC~ : execute command (Emacs M-x)
+
+*** Window ~SPC w~
+
+- ~SPC [0...9]~ - go to window number [0..9]
+- ~SPC w /~ - split window vertically
+- ~SPC w -~ - split window horizontally
+- ~SPC w d~ - delete window
+- ~SPC w 1~- extend current window to whole screen
+
+*** buffers ~SPC b~
+
+- ~SPC b b~ - list of all buffers
+- ~SPC b d~ - kill current buffer (not delete)
+
+*** file ~SPC f~
+
+- ~SPC f s~ - save a file
+- ~SPC p p~ - open a project
+- ~SPC f f~ - find a file
+- ~SPC p f~ - find a file in current project
+
+*** Getting help ~SPC h~
+
+- ~SPC h~ - help system
+- ~SPC h d f~ - description of selected function
+- ~SPC h d k~ - description of selected key binding
+
+*** Working with REPLs
+
+- ~, s c~ connect to a REPL / process
+- ~, s s~ toggle between REPL and code buffer
+- ~, s q~ quit current REPL
+- ~, s Q~ quit all REPLs for the current project/session
+- ~, j j~ connect to a regular REPL (Clojure)
+- ~, j o~ connect to "other" REPL (ClojureScript)
+- ~, j a~ connect to "all" (Clojure + ClojureScript)
+- ~, l l~ link current project/buffer to an open REPL session
+
+*** Structural editing
+
+- ~>~ slurp forward
+- ~<~ barf forward
+- ~SPC x s~ splice backward
+- ~SPC x t~ transpose sexp
+- ~L~ forward sexp
+- ~H~ backward sexp
+
+The latter two are "text objects" that can be combined with other vim-style
+operations
+
+- ~yL~ copy next sexp (paste with ~p~
+- ~dL~ delete next sexp
+- ~cL~ "change" sexp (delete and switch to insert mode)
+
 * Packages
 ** corgi-defaults
-
 ** corgi-editor
 ** corgi-emacs-lisp
 ** corgi-commands
