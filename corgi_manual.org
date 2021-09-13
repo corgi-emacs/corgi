@@ -266,12 +266,12 @@ keybinding. So you can configure the command you want to use, and have it work
 consistently even when switching between different sets of bindings.
 
 The other purpose is to provide mnemonic bindings that work in a mode-specific
-way. E.g. `SPC s s` invokes the signal `:repl/toggle`. In Clojure mode this will
-be bound to `cider-switch-to-repl-buffer`, whereas in Emacs LISP mode it will
-call `ielm`, and in SQL mode it does a `sql-show-sqli-buffer`. Each brings you
+way. E.g. ~SPC s s~ invokes the signal ~:repl/toggle~. In Clojure mode this will
+be bound to ~cider-switch-to-repl-buffer~, whereas in Emacs LISP mode it will
+call ~ielm~, and in SQL mode it does a ~sql-show-sqli-buffer~. Each brings you
 to the REPL associated with the file you are working on.
 
-If you decide you don't like `SPC s s` for this functionality then you can
+If you decide you don't like ~SPC s s~ for this functionality then you can
 rebind that, and it will work accordingly in all these modes.
 
 ** Keys to get you started 
