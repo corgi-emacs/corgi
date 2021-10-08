@@ -1,28 +1,32 @@
 # Corgi
 
 A minimalistic evil-based Emacs configuration that feels like a slimmed down
-version of Spacemacs.
-
-**This is a work in progress, please get in touch if you want to help beta-test
-Corgi.**
+version of Spacemacs. It is optimized for Clojure developers, and for use in
+terminals.
 
 We've started on a [User Manual](corgi_manual.org), please start there.
 
 ## Status
 
-Corgi is pre-alpha. I use it, working around some known issues. It has not been 
-officially announced yet, and we do not guarantee that it works.
+Corgi is slowly emerging out of stealth mode. The [Gaiwan](https://gaiwan.co)
+team has been using it for over a year, and we warmly invite you to try it out
+and tell us what you think.
 
-We are interested in finding collaborators and contributors in order to get Corgi
-in a shippable state. If you are interested in helping out with that then get in 
-touch, and we can add you to the Lambda Island Discord server, to discuss how to
-proceed.
+## Project Structure
 
-We will not respond to Github issues asking for support at this time.
+Corgi is different from most Emacs configs in that it isn't really a config at
+all, instead it's a set of packages meant to be used with the
+[Straight](https://github.com/raxod502/straight.el#git-backend) version manager,
+which allow you to create your own Corgi-based config.
 
-## Where did the code go?
+This repository *can* be used as an Emacs config (clone it to `~/.emacs.d` or
+use [Chemacs2](https://github.com/plexus/chemacs2)), but we really recommend you
+just copy the three `.el` files (`early-init.el`, `init.el`, `bootstrap.el`),
+and take it from there. You will see there is very little in them, they just set
+up the Corgi package repository, and install the necessary packages.
 
-Check out [corgi-packages](https://github.com/lambdaisland/corgi-packages)
+The bulk of the actual Corgi code is under
+[corgi-packages](https://github.com/lambdaisland/corgi-packages)
 
 ## Motivation
 
