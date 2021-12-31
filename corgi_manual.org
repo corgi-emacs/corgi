@@ -354,14 +354,82 @@ operations
 ** corgi-commands
 ** corgi-clojure
 ** corgi-stateline
-** corkey
+
+** Corkey
+
+Corkey is Corgi's key binding system. It's powerful and flexible, but does
+things quite differently from other Emacs configs, and we encourage you to
+familiarize yourself with its concepts.
+
+Some of the goals of Corkey:
+
+- Have all bindings centralized in simple data files
+- Make it easy to add or override bindings in your config
+- Provide consistent bindings across modes (e.g. have the same key combination
+  to "eval" something, regardless of the language)
+- Make it easy to customize these consistently, e.g. change the "eval"
+  keybinding in one place and have it apply to all modes
+- Make it easy to share complete sets of bindings with others
+- Provide both vim-style state-specific bindings and "global" (any state)
+  bindings
+- Have great ~which-key~ hints/descriptions for everything
+- Allow toggling all Corkey bindings on or off globally
+
+*** Initializing Corkey
+
+In the example config we've shown how to initialize Corkey:
+
+#+begin_src emacs-lisp
+  (use-package corkey
+    :config
+    (corkey-mode 1)
+    (corkey/install-bindings))
+#+end_src
+
+This makes sure the ~corkey~ package is installed and loaded, it then enables
+the global ~corkey-mode~, and sets up the built-in bindings by loading the
+default binding files.
+  
+*** Installing bindings
+
+Before you use Corkey you need to load the set of key bindings it will use, it
+will then apply the right set of bindings depending on the major and minor modes
+active in a given buffer.
+
+~corkey/install-bindings~ takes two optional arguments, a list of binding files,
+and a list of signal files, so ~(corgi/install-bindings)~ is really just a shorthand for
+
+#+begin_src emacs-lisp
+(corgi/install-bindings '(corgi-keys) '(corgi-signals))
+#+end_src
+
+These are references to EDN-like files. Corkey will try to look this up in your
+~emacs-user-directory~, and if not found there falls back to scanning the Emacs
+library path.
+
+In other words: Corkey will look for ~corgi-keys.el~ in your Emacs config
+directory, and if it doesn't find it there it will use the one provided by
+~corgi-packages/corkey~. The same goes for ~corgi-signals~. This means that you
+can copy these files to your Emacs config directory and customize them there.
+
+Alternatively you can provide additional file references, in which case the
+definitions in each will be combined. Files later in the list will override
+definitions from files earlier in the list, so if you create a file in your
+Emacs config directory called ~my-keys.el~, and initialize Corkey like this:
+  
+#+begin_src emacs-lisp
+(corgi/install-bindings '(corgi-keys my-keys) '(corgi-signals))
+#+end_src
+
+Then you can override bindings or add new ones in ~my-keys.el~.
+
 
 * Differences from Vim
 
 Generally we don't override Evil's keybindings, and Evil in turns emulates vim
 closely. Some differences
 
-- `L` and `H` move forward/backward by one s-expression, instead of moving to
+- ~L~ and ~H~ move forward/backward by one s-expression, instead of moving to
   the beginning/end of the buffer
-- `SPC` and `,` are both used as leader/prefix keys. Press either and wait a bit
+- ~SPC~ and ~,~ are both used as leader/prefix keys. Press either and wait a bit
   to see what they can do.
