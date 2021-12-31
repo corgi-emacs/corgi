@@ -1,5 +1,7 @@
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Straight
+;; Set up low-level stuff so we can install the various packages that make up
+;; Corgi. Not super pretty, but you normally don't have to look at it.
+
+;; Install the Straight package manager
 
 (defvar bootstrap-version)
 
@@ -12,12 +14,16 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
+;; Install the use-package convenience macro
+
 (straight-use-package 'use-package)
 
 (setq straight-use-package-by-default t)
 
 (when (not (file-exists-p (expand-file-name "straight/versions/default.el" straight-base-dir)))
   (straight-freeze-versions))
+
+;; Enable the corgi-packages repository so we can install our packages with Straight
 
 (use-package corgi-packages
   :straight (corgi-packages
@@ -26,15 +32,3 @@
              :repo "lambdaisland/corgi-packages"))
 
 (add-to-list #'straight-recipe-repositories 'corgi-packages)
-
-(let ((straight-current-profile 'corgi))
-  (use-package corgi-defaults)
-  (use-package corgi-editor)
-  (use-package corgi-emacs-lisp)
-  (use-package corgi-commands)
-  (use-package corgi-clojure)
-  (use-package corgi-stateline)
-  (use-package corkey
-    :config
-    (corkey-mode 1)
-    (corkey/install-bindings)))
