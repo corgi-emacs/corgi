@@ -23,7 +23,10 @@
 (when (not (file-exists-p (expand-file-name "straight/versions/default.el" straight-base-dir)))
   (straight-freeze-versions))
 
-;; Enable the corgi-packages repository so we can install our packages with Straight
+;; Enable the corgi-packages repository so we can install our packages with
+;; Straight. This also runs some Corgi initialization code, notably copying over
+;; Corgi's version file, so you get the same versions of packages that Corgi was
+;; tested with.
 
 (use-package corgi-packages
   :straight (corgi-packages

@@ -484,13 +484,15 @@ default binding files.
 
 Before you use Corkey you need to load the set of key bindings it will use, it
 will then apply the right set of bindings depending on the major and minor modes
-active in a given buffer.
+active in a given buffer. This is done with ~corkey/load-and-watch~, which sets
+up file watchers for the key binding and signal mapping files, so any changes in
+them are reflected immediately.
 
-~corkey/install-bindings~ takes two optional arguments, a list of binding files,
-and a list of signal files, so ~(corgi/install-bindings)~ is really just a shorthand for
+~corkey/load-and-watch~ takes two optional arguments, a list of binding files,
+and a list of signal files, so ~(corgi/load-and-watch)~ is really just a shorthand for
 
 #+begin_src emacs-lisp
-(corgi/install-bindings '(corgi-keys user-keys) '(corgi-signals user-signals))
+(corgi/load-and-watch '(corgi-keys user-keys) '(corgi-signals user-signals))
 #+end_src
 
 These are references to EDN-like files. Corkey will try to look this up in your
@@ -544,4 +546,9 @@ To evaluate forms I mainly use ~, RET~ (evaluate outer form), and ~, e p~
 buffer), but there are a slew of "eval" commands available.
 
 Inside LISP buffers the ~L~ and ~H~ text objects come in handy, these jump back
-and forth across s-expressions.
+and forth across s-expressions, and can be combined with Vim commands, like ~dL~
+(delete sexp) or ~3yL~ (copy next 3 sexps).
+
+~, g g~ is a general binding to jump to an identifier's definition, get used to
+using this *a lot*. This will also help you explore libraries you're using. ~, g
+b~ will pop you back to where you came from.

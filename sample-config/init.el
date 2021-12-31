@@ -77,7 +77,14 @@
 
 ;; A hierarchical file browser, included here as an example of how to set up
 ;; custom keys, see `user-keys.el' (visit it with `SPC f e k').
-(use-package treemacs)
+(use-package treemacs
+  :config
+  (setq treemacs-follow-after-init t)
+  (treemacs-project-follow-mode)
+  (treemacs-git-mode 'simple))
+
+(use-package treemacs-evil)
+(use-package treemacs-projectile)
 
 ;; REPL-driven development for JavaScript, included as an example of how to
 ;; configure signals, see `user-signal.el' (visit it with `SPC f e s')
