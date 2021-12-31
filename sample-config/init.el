@@ -68,8 +68,11 @@
 (use-package yaml-mode)
 (use-package typescript-mode)
 
-;; Nice to have when editing LISP code, color matching parenthesis in the same
-;; color.
+;; Some other examples of things you could include. There's a package for
+;; everything in Emacs, so if you're missing a specific feature, see if you
+;; can't find a good package that provides it.
+
+;; Color hex color codes so you can see the actual color.
 (use-package rainbow-mode)
 
 ;; A hierarchical file browser, included here as an example of how to set up
@@ -105,8 +108,15 @@
   :config
   (load-theme 'sanityinc-tomorrow-bright t))
 
+;; Maybe set a nice font to go with it
+;; (set-frame-font "Iosevka Fixed SS14-14")
+
 ;; Not a fan of trailing whitespace in source files, strip it out when saving.
 (add-hook 'before-save-hook
           (lambda ()
             (when (derived-mode-p 'prog-mode)
               (delete-trailing-whitespace))))
+
+;; Enabling desktop-save-mode will save and restore all buffers between sessions
+(setq desktop-restore-frames nil)
+(desktop-save-mode 1)

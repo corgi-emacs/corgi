@@ -27,14 +27,11 @@
  (global
   )
 
-
  ;; Bindings for commands are usually only active in normal and visual state.
  (normal|visual
   ("SPC"
+   ("0" "Select Treemacs" treemacs-select-window)
    ("f"
-    ("t" "Turn Treemacs on/off" treemacs))
-
-   ("p"
-    ;; Try `SPC t t'
-    ("t" "Play Tetris" tetris)
-    ("d" "Play the Dunnet text adventure" dunnet)))))
+    ("t" "Turn Treemacs on/off" treemacs)
+    ("T" "Focus current file in file tree" treemacs-find-file))
+   )))

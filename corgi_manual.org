@@ -109,9 +109,60 @@ Some more examples:
 - `cs(]` change surrounding parenthesis to brackets
 - `di"` delete inner string, i.e. delete everything inside the surrounding
   double quotes
+  
+** Focused on Clojure and LISP
+
+This setup is mainly intended for Clojure programmers. That isn't to say that
+you can't or shouldn't use Corgi with other languages, but when making choices
+of what to include a big factor is how much it matters to Clojure and LISP
+developers.
+
+So we care a lot about interactive development, and structural editing, and make
+sure we have short convenient bindings for these things.
 
 ** Keybindings all live in one place
+
+The common practice in the Emacs world is for packages to come with a bunch of
+keybindings out of the box, and for the Emacs config to then add a bunch more.
+These are all set up in their own library (~.el~) files imperatively with calls
+to ~define-key~ and friends.
+
+In Corgi we load key bindings from key and signal files. These are pure-data
+specifications. Corgi comes with ~corgi-keys.el~ and ~corgi-signals.el~, these
+contain all the bindings that Corgi provides, you can see them all in a single
+place.
+
+For custom bindings you can put a ~user-keys.el~ and ~user-signals.el~ in your
+Emacs user directory, and they will get merged in (and get precedence, so you
+can override built-ins). For more extensive changes you can place a custom
+~corgi-keys.el~ and/or ~corgi-signals.el~ in your Emacs user directory, and it
+will be used instead of the built-in ones.
+
+Signals provide a level of indirection, they are keywords, like ~:eval/buffer~,
+or ~:file/open~. In the key binding file you configure how the signal is
+triggered (e.g. with ~, e b~ or ~SPC f f~), in the signals file you bind it to a
+specific command, based on the mode, like ~eval-buffer~ in Emacs LISP, or
+~cider-eval-buffer~ in Clojure.
+
+This way we get great consistency, you can rebind how you want to "evaluate the
+current buffer", and this key binding will work everywhere, even if the concrete
+commands are language-dependent.
+
+It also means you can change the concrete command, like using
+~counsel-find-file~ instead of the vanilla ~find-file~, and this change will
+work regardless of how you are invoking that.
+
 ** First class terminal and GUI support
+
+While using GUI Emacs generally provides the better experience, there is value
+in continuing to support usage from a simple dumb terminal emulator. It's
+especially valuable for use on servers, and combined with Tmux it provides a
+great low-latency mechanism for pairing in the cloud. (See our [[https://lambdaisland.com/blog/2019-12-12-advent-of-parens-12-pairing-cloud-tmux][blog post on the
+matter]]).
+
+So we mainly try to not do anything funky that terminals can't handle, we pick
+bindings that can be communicated over a TTY, and include a few tweaks to make
+the emacs-in-a-terminal experience a little more smooth.
 
 * Installation
 ** Installing Emacs
@@ -178,63 +229,43 @@ This means that a corgi-based Emacs config consists of four parts
 - Install corgi packages
 - Do your own setup
 
-Here's a basic config to get you started:
+The Corgi repo contains a [[https://github.com/lambdaisland/corgi/tree/main/sample-config][sample-config]] that you can copy to ~$HOME/.emacs.d~.
+We recommend using [[https://github.com/plexus/chemacs2][Chemacs2]], especially if you already have an existing config
+that you want to keep.
 
-#+begin_src emacs-lisp
-;; ~/.emacs or ~/.emacs.d/init.el
+If you don't have an existing Emacs config yet:
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Install straight.el
+#+begin_src shell
+  git clone https://github.com/plexus/chemacs2.git ~/.emacs.d
 
-(defvar bootstrap-version)
+  git clone https://github.com/lambdaisland/corgi /tmp/corgi
+  cp -r /tmp/corgi/sample-config ~/.emacs.corgi
 
-(let ((install-url "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el")
-      (bootstrap-file (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-      (bootstrap-version 5))
-  (unless (file-exists-p bootstrap-file)
-    (with-current-buffer (url-retrieve-synchronously install-url 'silent 'inhibit-cookies)
-      (goto-char (point-max))
-      (eval-print-last-sexp)))
-  (load bootstrap-file nil 'nomessage))
-  
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Install and enable use-package
-
-(straight-use-package 'use-package)
-
-(setq straight-use-package-by-default t)
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Install Corgi
-
-(use-package corgi-packages
-  :straight (corgi-packages
-             :type git
-             :host github
-             :repo "lambdaisland/corgi-packages"))
-
-(add-to-list #'straight-recipe-repositories 'corgi-packages)
-
-(let ((straight-current-profile 'corgi))
-  (use-package corgi-defaults)
-  (use-package corgi-editor)
-  (use-package corgi-emacs-lisp)
-  (use-package corgi-commands)
-  (use-package corgi-clojure)
-  (use-package corgi-stateline)
-  (use-package corkey
-    :config
-    (corkey-mode 1)
-    (corkey/install-bindings)))
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;; Your own stuff goes here, we recommend these extra packages
-
-(use-package markdown-mode)
-(use-package yaml-mode)
-(use-package org)
-(use-package magit)
+  [ -f ~/.emacs-profiles.el ] || cat <EOF > ~/.emacs-profiles.el
+  (("default" . ((user-emacs-directory . "~/.emacs.corgi"))))
+  EOF
 #+end_src
+
+If you an ~.emacs.d~ you want to keep:
+
+#+begin_src shell
+  [ -f ~/.emacs ] && mv ~/.emacs ~/.emacs.bak
+  [ -d ~/.emacs.d ] && mv ~/.emacs.d ~/.emacs.default
+  git clone https://github.com/plexus/chemacs2.git ~/.emacs.d
+
+  git clone https://github.com/lambdaisland/corgi /tmp/corgi
+  cp -r /tmp/corgi/sample-config ~/.emacs.corgi
+  
+  [ -f ~/.emacs-profiles.el ] || cat <<EOF > ~/.emacs-profiles.el
+  (("default" . ((user-emacs-directory . "~/.emacs.default")))
+   ("corgi" . ((user-emacs-directory . "~/.emacs.corgi")))
+  EOF
+#+end_src
+
+And run with ~emacs --with-profile corgi~. It's recommended you go through the
+files in the sample config to get a bit more familiar with what is there, this
+will after all become your own config going forward. They are elaborately
+documented to help you make sense of it all.
 
 * Key bindings
 
@@ -349,11 +380,70 @@ operations
 
 * Packages
 ** corgi-defaults
+
+This simply sets a slew of of Emacs variables to more sensible values, from
+disabling the menubar and toolbar, to fixing modifier keys on Mac and disabling
+the system bell.
+
+There are many versions of this kind of thing around, this one is ours. We've
+tried to include mostly non-controversial things, but if there is anything you
+don't like then just copy this file over to your own config, load your own
+version instead of ours, and take it from there.
+
 ** corgi-editor
+
+This is the meat-and-potatoes of the Corgi experience, how the editor feels and
+behaves. This sets up and configures a bunch of packages like Evil, Smartparens,
+Ivy (minibuffer completion), Swiper (fuzzy search), Projectile (project-aware
+commands), Aggressive indent, Company (completion).
+
+Full list at time of writing:
+
+- aggressive-indent: auto-indent code as you type
+- avy: jump to specific character
+- company: completion framework
+- counsel: Improves some of the built-in UI using the Ivy completion features
+- diminish: Clean up the modeline by hiding certain minor modes
+- dumb-jump: Simple jump to identifier, mainly a fallback
+- evil: Vim-style editing
+- evil-cleverparens: Evil-based structural editing
+- evil-collection: Make many more areas of Emacs play nice with Evil
+- evil-surround: Port of Vim-surround, especially handy in LISP
+- expand-region: Edit by semantically shrinking/expanding the selection
+- goto-last-change: Jump to the last change in the file
+- ivy: Minibuffer completion framework
+- projectile: Project-specific functionality
+- rainbow-delimiters: Color matching parenthesis, brackets, etc.
+- smartparens: Structural editing
+- smex: Interactive fuzzy-searching alternative to ~M-x~
+- string-edit: Edit string contents in a separate buffer (great when you have a lot of escaping)
+- swiper: Fuzzy search inside the buffer
+- undo-fu: Better undo
+- which-key: Make keys discoverable
+- winum: Number buffers and jump to them easily
+- xclip: Only on terminal, integrate with the system clipboard
+
 ** corgi-emacs-lisp
+
+Emacs Lisp config, mainly to have a development experience that feels similar to
+using CIDER and Clojure. (show results in overlay, threading refactorings)
+
 ** corgi-commands
+
+The few custom commands that we ship with. This includes a few things we emulate
+from Spacemacs, and commands for jumping to the user's init.el (this file, with
+`SPC f e i'), or opening the user's key binding or signals file.
+
 ** corgi-clojure
+
+Extensive setup for a good Clojure experience, including clojure-mode, CIDER,
+and a modeline indicator that shows which REPLs your evaluations go to. Also
+contains `corgi/cider-pprint-eval-register', bound to `,,'.
+
 ** corgi-stateline
+
+Change the color of the modeline based on the Evil state (e.g. green when in
+insert state)
 
 ** Corkey
 
@@ -383,7 +473,7 @@ In the example config we've shown how to initialize Corkey:
   (use-package corkey
     :config
     (corkey-mode 1)
-    (corkey/install-bindings))
+    (corkey/load-and-watch))
 #+end_src
 
 This makes sure the ~corkey~ package is installed and loaded, it then enables
@@ -400,7 +490,7 @@ active in a given buffer.
 and a list of signal files, so ~(corgi/install-bindings)~ is really just a shorthand for
 
 #+begin_src emacs-lisp
-(corgi/install-bindings '(corgi-keys) '(corgi-signals))
+(corgi/install-bindings '(corgi-keys user-keys) '(corgi-signals user-signals))
 #+end_src
 
 These are references to EDN-like files. Corkey will try to look this up in your
@@ -412,17 +502,18 @@ directory, and if it doesn't find it there it will use the one provided by
 ~corgi-packages/corkey~. The same goes for ~corgi-signals~. This means that you
 can copy these files to your Emacs config directory and customize them there.
 
-Alternatively you can provide additional file references, in which case the
-definitions in each will be combined. Files later in the list will override
-definitions from files earlier in the list, so if you create a file in your
-Emacs config directory called ~my-keys.el~, and initialize Corkey like this:
-  
-#+begin_src emacs-lisp
-(corgi/install-bindings '(corgi-keys my-keys) '(corgi-signals))
-#+end_src
+~user-keys.el~ and ~user-signals.el~ are what goes into your own config, here
+you can add whatever extra bindings you like to have. The sample config has an
+example.
 
-Then you can override bindings or add new ones in ~my-keys.el~.
+You can jump to all of these files with built-in commands
 
+- ~SPC f e k~ - Open user-keys, create it if it doesn't exist
+- ~SPC f e s~ - Open user-signals, create it if it doesn't exist
+- ~SPC f e K~ - Open corgi-keys (all built-in bindings)
+- ~SPC f e S~ - Open user-signals (all built-in signal mappings)
+
+See the comments in those files for more info on how to set things up.
 
 * Differences from Vim
 
@@ -433,3 +524,24 @@ closely. Some differences
   the beginning/end of the buffer
 - ~SPC~ and ~,~ are both used as leader/prefix keys. Press either and wait a bit
   to see what they can do.
+
+* Walkthrough of a Clojure session
+
+When working on a Clojure project I will typically start by opening a ~.clj~,
+~.cljs~, or ~.edn~ file, and "jacking-in" CIDER. I'll either use ~SPC j j~ if
+it's a plain Clojure project (just start a Clojure REPL), or ~SPC j a~ for both
+CLJ and CLJS (most CLJS projects I still like to have a CLJ REPL around).
+
+Once that's started you can jump back and forth to the REPL buffer with ~, s s~.
+When you're done you can close a single REPL with ~, s q~, or all connected
+REPLs for this project with ~, s Q~.
+
+If you are running your nREPL sever outside of Emacs, then use ~, s c~ to
+connect to it.
+
+To evaluate forms I mainly use ~, RET~ (evaluate outer form), and ~, e p~
+(evaluate the form before the cursor, and pretty print the result to a separate
+buffer), but there are a slew of "eval" commands available.
+
+Inside LISP buffers the ~L~ and ~H~ text objects come in handy, these jump back
+and forth across s-expressions.
