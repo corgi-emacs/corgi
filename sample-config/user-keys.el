@@ -27,9 +27,13 @@
  (global
   )
 
+
  ;; Bindings for commands are usually only active in normal and visual state.
  (normal|visual
   ("SPC"
+   ("f"
+    ("t" "Turn Treemacs on/off" treemacs))
+
    ("p"
     ;; Try `SPC t t'
     ("t" "Play Tetris" tetris)

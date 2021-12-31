@@ -1,8 +1,16 @@
+;; This is your Emacs init file, it's where all initialization happens. You can
+;; open it any time with `SPC f e i' (file-emacs-init)
+
+;; `bootstrap.el' contains boilerplate code related to package management. You
+;; can follow the same pattern if you want to split out other bits of config.
 (load-file (expand-file-name "bootstrap.el" user-emacs-directory))
 
-;; Corgi is just a set of packages. You can use `M-x find-library' to check them
-;; out. Or if you want to tweak things then just copy the code over to your
-;; config and edit it there.
+;; What follows is *your* config. You own it, don't be afraid to customize it to
+;; your needs. Corgi is just a set of packages. Comment out the next section and
+;; you get a vanilla Emacs setup. You can use `M-x find-library' to look at the
+;; package contents of each. If you want to tweak things in there then just copy
+;; the code over to your `user-emacs-directory', load it with `load-file', and
+;; edit it to your heart's content.
 
 (let ((straight-current-profile 'corgi))
   ;; Change a bunch of Emacs defaults, from disabling the menubar and toolbar,
@@ -50,13 +58,27 @@
 
 ;; Load other useful packages you might like to use
 
+;; Powerful Git integration. Corgi already ships with a single keybinding for
+;; Magit, which will be enabled if it's installed (`SPC g g' or `magit-status').
 (use-package magit)
+
+;; Language-specific packages
 (use-package org)
 (use-package markdown-mode)
 (use-package yaml-mode)
 (use-package typescript-mode)
+
+;; Nice to have when editing LISP code, color matching parenthesis in the same
+;; color.
 (use-package rainbow-mode)
+
+;; A hierarchical file browser, included here as an example of how to set up
+;; custom keys, see `user-keys.el' (visit it with `SPC f e k').
 (use-package treemacs)
+
+;; REPL-driven development for JavaScript, included as an example of how to
+;; configure signals, see `user-signal.el' (visit it with `SPC f e s')
+(use-package js-comint)
 
 ;; Start the emacs-server, so you can open files from the command line with
 ;; `emacsclient -n <file>' (we like to put `alias en="emacsclient -n"' in our
@@ -77,7 +99,7 @@
 (set-register ?g "#_clj (user/go)")
 (set-register ?b "#_clj (user/browse)")
 
-;; We like this theme because it looks nice and works well enough on terminal,
+;; We like this theme because it looks nice and works well enough in terminals,
 ;; swap it out with whatever suits you.
 (use-package color-theme-sanityinc-tomorrow
   :config
@@ -88,7 +110,3 @@
           (lambda ()
             (when (derived-mode-p 'prog-mode)
               (delete-trailing-whitespace))))
-
-(let ((local-config (expand-file-name "local.el" user-emacs-directory)))
-  (when (file-exists-p local-config)
-    (load-file local-config)))
