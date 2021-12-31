@@ -1,122 +1,47 @@
 # Corgi
 
-A minimalistic evil-based Emacs configuration that feels like a slimmed down
-version of Spacemacs. It is optimized for Clojure developers, and for use in
-terminals.
+Corgi is an Emacs configuration for Clojure developers who like Vim-style modal
+editing.
 
-We've started on a [User Manual](corgi_manual.org), please start there.
+The UX is heavily inspired by Spacemacs (similar `SPC` and `,` leader key
+bindings), but is about 50x less code. That makes it faster to start up,
+spiffier in use, and a lot more pleasant to deal with when things go wrong.
+
+Corgi is an _unbundled_ Emacs config. Instead of providing a full config we
+provide a set of packages (see
+[corgi-packages](https://github.com/lambdaisland/corgi-packages)) for use with
+[Straight.el](https://github.com/raxod502/straight.el) package manager. The
+Emacs config itself (the contents of `~/.emacs.d`) are **yours**. We provide a
+[sample-config](https://github.com/lambdaisland/corgi/tree/main/sample-config).
+
+If you're impatient then just copy the contents of that directory to
+`~/.emacs.d` and start Emacs. The first run will need some time to install
+various packages, after that you're ready to go. Try `SPC f e K` to see all
+Corgi-specific key bindings.
+
+There is documentation in the form of a [User Manual](corgi_manual.org), we
+recommend reading it to get an idea about what is there.
 
 ## Status
 
-Corgi is slowly emerging out of stealth mode. The [Gaiwan](https://gaiwan.co)
-team has been using it for over a year, and we warmly invite you to try it out
-and tell us what you think.
+After two years of development we've decided to call it 1.0. It's ready, go use
+it! Issue reports are very welcome, as are PRs, although it's always a good idea
+to sollicit feedback first via an issue, to make sure your changes are in line
+with the scope and philosophy of the project.
 
-## Project Structure
+## Corkey
 
-Corgi is different from most Emacs configs in that it isn't really a config at
-all, instead it's a set of packages meant to be used with the
-[Straight](https://github.com/raxod502/straight.el#git-backend) version manager,
-which allow you to create your own Corgi-based config.
+The bulk of Corgi is just a selection of packages, with sprinkles of
+configuration and glue. The big exception is Corkey, this is our key binding
+layer, which builds on top of Evil, but does things in its own unique way,
+different from what you may be used to from Emacs, Evil, or Spacemacs.
 
-This repository *can* be used as an Emacs config (clone it to `~/.emacs.d` or
-use [Chemacs2](https://github.com/plexus/chemacs2)), but we really recommend you
-just copy the three `.el` files (`early-init.el`, `init.el`, `bootstrap.el`),
-and take it from there. You will see there is very little in them, they just set
-up the Corgi package repository, and install the necessary packages.
-
-The bulk of the actual Corgi code is under
-[corgi-packages](https://github.com/lambdaisland/corgi-packages)
-
-## Motivation
-
-While I love Spacemacs I find the sheer size of it can become an issue. It
-contains much functionality and many customizations that I don't need, and I
-struggle to understand how things fit together, or how to add my own
-customizations.
-
-This is an attempt to go back to the basics, a simple and straightforward Emacs
-config built from first principles, using `straight.el` for reproducible package
-installs, and `use-package` to keep the config tidy. It sets up Vim/Evil style
-editing, as well as spacebar-prefixed keybindings in the style of Spacemacs.
-
-I especially felt the need for a lighter config when doing [remote pairing using
-tmux](https://lambdaisland.com/blog/2019-12-12-advent-of-parens-12-pairing-cloud-tmux).
-The limited set of dependencies should make this config quick to set up, and
-snappy in use.
-
-Corgi comes with its own keybinding package, `corkey`, which sets up bindings
-based on one or more keybinding files. To customize, either add keybinding files
-into your config which get layered over the built-in ones, or copy the corgi
-bindings file into your config and customize it.
-
-Corkey uses an extra layer of indirection called signals, this makes it easy to
-have consistent key bindings across major-modes. E.g. Corgi provides the same
-shortcuts for evaluating code, no matter in which language.
-
-It also makes it easier to provide alternative binding sets, while honoring
-people's preferences. E.g. a binding set can have `Ctrl-F` for `:search/buffer`,
-which may invoke `swiper` or `isearch` or something else, based on the user's
-preferences.
-
-## Principles
-
-**Everything is a package**
-
-Corgi itself is just a collection of packages, and most of what Corgi does is
-pull in a selection of packages.
-
-Custom functions and modifications go into their own dedicated package, so they
-are available for use by the community at large, or they are submitted upstream,
-so that the config itself is just loading packages and tying them together.
-
-**It's your config**
-
-We don't take over `init.el`, at the end of the day you decide how your config
-works. You decide which Corgi packages to pull in, and if you don't like some of
-our choices, you can simply copy over the relevant code and tweak it from there.
-
-**When in doubt, do less**
-
-When there are multiple competing options for how to handle something, do the
-one that is closer to the default.
-
-**Declarative keybindings**
-
-Bindings are data and should be in one place, people who want to tweak or supply
-their own bindings need to just edit one file with bindings and nothing but
-bindings.
-
-**Consistent keybindings**
-
-When a command is specific to a major mode, its binding should do the closest
-equivalent in other major modes, or do nothing. So no bindings that do radically
-different things depending on the mode. (this is mostly for `,` leader keys)
-
-**A good enough subset**
-
-We don't want to do everything that Spacemacs (or vim) does, we do want to have
-a good enough set of commands that a person can easily learn and be productive
-with, without getting overwhelmed.
-
-**Terminal-first**
-
-Things should work just as well in the terminal as in the GUI. There should be
-no bindings or behaviors that only work in the GUI.
-
-**Reproducible**
-
-Everything is immutably versioned with straight. People should never run into
-issues because of slightly different package versions.
-
-**Somewhat opinionated**
-
-This config makes a few clear, non-negotiable decisions. It's evil based, has
-structural editing, etc. But on some things it does not have
-an opinion. 
+The [User Manual](corgi_manual.org) explains in more depth what Corkey is, how
+it works, and why it does things in a certain way. To make good use of Corgi we
+recommend getting familiar with Corkey.
 
 ## License
 
 GPL version 3
 
-Copyright &copy; Arne Brasseur 2020-2021
+Copyright &copy; Arne Brasseur 2020-2022

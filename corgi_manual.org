@@ -12,7 +12,9 @@ we mean for Corgi to be minimal?
 
 First off we limit the amount of packages that Corgi pulls in, even though some
 of the packages we do pull in are fairly large. Beyond that we limit the amount
-of customization we do beyond what these packages provide.
+of customization we do beyond what these packages provide. When in doubt, do
+less. When there are multiple competing options for how to handle something, do
+the one that is closer to the default.
 
 Combined this brings several benefits. It keeps Emacs running smoothly. It
 limits the number of moving parts, so there is less that can go wrong. And it
@@ -120,6 +122,12 @@ developers.
 So we care a lot about interactive development, and structural editing, and make
 sure we have short convenient bindings for these things.
 
+** Consistent keybindings
+
+When a command is specific to a major mode, its binding should do the closest
+equivalent in other major modes, or do nothing. So no bindings that do radically
+different things depending on the mode. (this is mostly for `,` leader keys)
+
 ** Keybindings all live in one place
 
 The common practice in the Emacs world is for packages to come with a bunch of
@@ -163,6 +171,14 @@ matter]]).
 So we mainly try to not do anything funky that terminals can't handle, we pick
 bindings that can be communicated over a TTY, and include a few tweaks to make
 the emacs-in-a-terminal experience a little more smooth.
+
+** It's your config
+
+We don't take over ~init.el~, at the end of the day you decide how your config
+works. You decide which Corgi packages to pull in, and if you don't like some of
+our choices, you can simply copy over the relevant code and tweak it from there.
+
+We call this an *unbundled* Emacs config.
 
 * Installation
 ** Installing Emacs
