@@ -440,6 +440,42 @@ Extensive setup for a good Clojure experience, including clojure-mode, CIDER,
 and a modeline indicator that shows which REPLs your evaluations go to. Also
 contains `corgi/cider-pprint-eval-register', bound to `,,'.
 
+We also include ~clj-ns-name~, which changes Clojure buffer names to their
+namespace name.
+
+*** Babashka utility REPL
+
+~corgi/cider-jack-in-babashka~ starts a new ~bb~ process and connects to it,
+creating a REPL buffer called ~*babashka-repl*~. This is meant as a
+project-independent long running utility REPL, so that you can always eval basic
+Clojure expressions. Whenever you are in a Clojure file and there is no
+project-specific connected REPL then evaluations will go to this Babashka REPL
+instead.
+
+*** Modeline indicator
+
+~corgi/enable-cider-connection-indicator~ will add an indicator in the modeline
+showing you which Clojure REPL(s) if any evaluations will go to. It's either a
+~clj~ on a blue background, a ~cljs~ on a yellow background, or a ~bb~ on a
+green background. If you are linked to a REPL from another project then the
+project directory will be included.
+
+*** Eval from register
+
+Emacs has registers, named slots where you can put snippets of text.
+~corgi/cider-pprint-eval-register~ leverages this, it lets you send code from a
+register to your REPL, and get the result pretty printed in a separate buffer.
+
+This is bound to ~,,~, so e.g. if you have ~(kaocha.repl/run)~ in the ~k~
+register, then ~,,k~ in a Clojure buffer will run Kaocha on the current file.
+
+There are two ways to leverage this, you can pre-set some registers in your
+~init.el~, like the Kaocha example, so you basically get your own shortcut
+commands. It's also really useful to use Emacs's ~copy-to-register~ in a more
+ad-hoc way. Say you are working on a function, and then you have a snippet that
+calls that function that you use to test it out. Copy the snippet to a register
+and you no longer need to jump back and forth.
+
 ** corgi-stateline
 
 Change the color of the modeline based on the Evil state (e.g. green when in
