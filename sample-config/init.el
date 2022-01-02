@@ -50,6 +50,8 @@
   ;; Corgi's keybinding system, which builds on top of Evil. See the manual, or
   ;; visit the key binding and signal files (with `SPC f e k', `SPC f e K', `SPC
   ;; f e s' `SPC f e S')
+  ;; Put this last here, otherwise keybindings for commands that aren't loaded
+  ;; yet won't be active.
   (use-package corkey
     :config
     (corkey-mode 1)

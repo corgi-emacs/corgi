@@ -395,6 +395,31 @@ operations
 - ~cL~ "change" sexp (delete and switch to insert mode)
 
 * Packages
+
+** corgi-packages
+
+The ~corgi-packages~ repo acts itself as a straight package, but a special kind
+of package called a "recipe repository", it contains the descriptions of all
+Corgi packages so Straight knows where to find them.
+
+It also contains the ~corgi/upgrade-self~ command, which you can use to upgrade
+Corgi itself. This will upgrade ~corgi-packages~ to the latest git commit, and
+overwrite the corgi versions file, before relying on Straight to get all other
+packages to the correct version.
+
+#+begin_src emacs-lisp
+(defun corgi/upgrade-self ()
+  "Upgrade Corgi
+
+   Fetch the latest corgi-packages, and make straight use the
+versions specified therein. Will overwrite any local changes to
+straight/versions/corgi.el"
+  (interactive)
+  (straight-pull-package "corgi-packages")
+  (corgi-copy-versions-file)
+  (straight-thaw-versions))
+#+end_src
+
 ** corgi-defaults
 
 This simply sets a slew of of Emacs variables to more sensible values, from
