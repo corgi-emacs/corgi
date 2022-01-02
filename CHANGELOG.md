@@ -1,3 +1,10 @@
+# main
+
+## Fixed
+
+- Fixed reference to corgi/cider-eval-pprint-register (`,,`)
+- Patch CIDER to stop asking about reusing REPLs
+
 # 1.0
 
 ## Fixed
