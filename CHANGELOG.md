@@ -1,9 +1,22 @@
 # main
 
+## Added
+
+- `corgi/cider-pprint-eval-register` now can process `{{...}}` template strings,
+  which will eval elisp code in the braces
+
 ## Fixed
 
-- Fixed reference to corgi/cider-eval-pprint-register (`,,`)
+- Fixed reference to `corgi/cider-eval-pprint-register` (`,,`)
 - Patch CIDER to stop asking about reusing REPLs
+- Fix typo in keybindings, fixes `,ss` (switch to REPL) for sql buffers
+- Handle some edge cases to make corkey more reliable
+
+## Changed
+
+- The "connect" bindings are now under `,c` instead of `,s`, this fixes a
+  clashing keybinding `,so` which was both bound to `:repl/other` and
+  `:repl/connect-to-other` (the latter is now `,co`).
 
 # 1.0
 
