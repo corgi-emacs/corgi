@@ -286,9 +286,8 @@ documented to help you make sense of it all.
 * Key bindings
 
 Corgi's key system is provided by one of a Corgi package called
-[Corkey](https://github.com/lambdaisland/corgi-packages/tree/main/corkey). It
-contains the key binding functionality based on simple configuration files, as
-well as Corgi's default bindings.
+[[https://github.com/lambdaisland/corgi-packages/tree/main/corkey][Corkey]]. It contains the key binding functionality based on simple
+configuration files, as well as Corgi's default bindings.
 
 You can find all binding definitions in [[https://github.com/lambdaisland/corgi-packages/blob/main/corkey/corgi-keys.el][corgi-keys.el]] and [[https://github.com/lambdaisland/corgi-packages/blob/main/corkey/corgi-signals.el][corgi-signals.el]]. The
 ~keys~ file contains the actual bindings as a nested datastructure, bound to
