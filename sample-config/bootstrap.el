@@ -32,6 +32,6 @@
   :straight (corgi-packages
              :type git
              :host github
-             :repo "lambdaisland/corgi-packages"))
+             :repo "corgi-emacs/corgi-packages"))
 
-(add-to-list #'straight-recipe-repositories 'corgi-packages)
+(add-to-list 'straight-recipe-repositories 'corgi-packages)

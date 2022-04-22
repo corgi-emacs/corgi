@@ -34,9 +34,7 @@
   ;; to.
   ;; Also contains `corgi/cider-pprint-eval-register', bound to `,,', see
   ;; `set-register' calls below.
-  (use-package corgi-clojure
-    :config
-    (corgi/enable-cider-connection-indicator))
+  (use-package corgi-clojure)
 
   ;; Emacs Lisp config, mainly to have a development experience that feels
   ;; similar to using CIDER and Clojure. (show results in overlay, threading
@@ -45,7 +43,13 @@
 
   ;; Change the color of the modeline based on the Evil state (e.g. green when
   ;; in insert state)
-  (use-package corgi-stateline)
+  (use-package corgi-stateline
+    :config
+    (global-corgi-stateline-mode))
+
+  ;; Package which provides corgi-keys and corgi-signals, the two files that
+  ;; define all Corgi bindings, and the default files that Corkey will look for.
+  (use-package corgi-bindings)
 
   ;; Corgi's keybinding system, which builds on top of Evil. See the manual, or
   ;; visit the key binding and signal files (with `SPC f e k', `SPC f e K', `SPC
@@ -119,6 +123,24 @@
 
 ;; Maybe set a nice font to go with it
 ;; (set-frame-font "Iosevka Fixed SS14-14")
+
+;; Enable our "connection indicator" for CIDER. This will add a colored marker
+;; to the modeline for every REPL the current buffer is connected to, color
+;; coded by type.
+(corgi/enable-cider-connection-indicator)
+
+;; Create a *scratch-clj* buffer for evaluating ad-hoc Clojure expressions. If
+;; you make sure there's always a babashka REPL connection then this is a cheap
+;; way to always have a place to type in some quick Clojure expression evals.
+(with-current-buffer (get-buffer-create "*scratch-clj*")
+  (clojure-mode))
+
+;; Connect to Babashka if we can find it. This is a nice way to always have a
+;; valid REPL to fall back to. You'll notice that with this all Clojure buffers
+;; get a green "bb" indicator, unless there's a more specific clj/cljs REPL
+;; available.
+(when (executable-find "bb")
+  (corgi/cider-jack-in-babashka))
 
 ;; Not a fan of trailing whitespace in source files, strip it out when saving.
 (add-hook 'before-save-hook
