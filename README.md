@@ -1,6 +1,6 @@
 # Corgi
 
-<img align="right" width="100" src="logo/corgi_icon.webp">
+<img align="right" width="200" src="logo/corgi_icon.webp">
 
 Corgi is an Emacs configuration for Clojure developers who like Vim-style modal
 editing.
