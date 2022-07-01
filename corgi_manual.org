@@ -262,7 +262,7 @@ If you don't have an existing Emacs config yet:
   EOF
 #+end_src
 
-If you an ~.emacs.d~ you want to keep:
+If you have an ~.emacs.d~ you want to keep:
 
 #+begin_src shell
   [ -f ~/.emacs ] && mv ~/.emacs ~/.emacs.bak
@@ -274,7 +274,7 @@ If you an ~.emacs.d~ you want to keep:
   
   [ -f ~/.emacs-profiles.el ] || cat <<EOF > ~/.emacs-profiles.el
   (("default" . ((user-emacs-directory . "~/.emacs.default")))
-   ("corgi" . ((user-emacs-directory . "~/.emacs.corgi")))
+   ("corgi" . ((user-emacs-directory . "~/.emacs.corgi"))))
   EOF
 #+end_src
 
