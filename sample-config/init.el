@@ -65,7 +65,7 @@
 ;; Load other useful packages you might like to use
 
 ;; Powerful Git integration. Corgi already ships with a single keybinding for
-;; Magit, which will be enabled if it's installed (`SPC g g' or `magit-status').
+;; Magit, which will be enabled if it's installed (`SPC g s' or `magit-status').
 (use-package magit)
 
 ;; Language-specific packages
