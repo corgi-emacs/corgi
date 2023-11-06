@@ -21,8 +21,13 @@ If you're impatient then just copy the contents of that directory to
 various packages, after that you're ready to go. Try `SPC f e K` to see all
 Corgi-specific key bindings.
 
+## Getting started
+
 There is documentation in the form of a [User Manual](corgi_manual.org), we
 recommend reading it to get an idea about what is there.
+
+There is a intro video guide to Corgi by [@oxalorg](https://github.com/oxalorg)
+here: [youtube.com/watch?v=5q4UmX45ZlM](https://www.youtube.com/watch?v=5q4UmX45ZlM)
 
 ## Status
 
