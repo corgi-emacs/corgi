@@ -96,6 +96,14 @@
 ;; configure signals, see `user-signal.el' (visit it with `SPC f e s')
 (use-package js-comint)
 
+;; Customizable key sequence to escape from insert state. Defaults to `fd'
+(use-package evil-escape
+  :straight (evil-escape :type git :host github :repo "syl20bnr/evil-escape"
+                         :fork (:host github :repo "emacsorphanage/evil-escape"))
+  :diminish evil-escape-mode
+  :config
+  (evil-escape-mode))
+
 ;; Start the emacs-server, so you can open files from the command line with
 ;; `emacsclient -n <file>' (we like to put `alias en="emacsclient -n"' in our
 ;; shell config).
