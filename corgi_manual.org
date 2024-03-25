@@ -589,7 +589,7 @@ You can jump to all of these files with built-in commands
 - ~SPC f e k~ - Open user-keys, create it if it doesn't exist
 - ~SPC f e s~ - Open user-signals, create it if it doesn't exist
 - ~SPC f e K~ - Open corgi-keys (all built-in bindings)
-- ~SPC f e S~ - Open user-signals (all built-in signal mappings)
+- ~SPC f e S~ - Open corgi-signals (all built-in signal mappings)
 
 See the comments in those files for more info on how to set things up.
 
