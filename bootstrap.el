@@ -1,3 +1,5 @@
+;; -*- lexical-binding: t -*-
+
 ;; Set up low-level stuff so we can install the various packages that make up
 ;; Corgi. Not super pretty, but you normally don't have to look at it.
 
